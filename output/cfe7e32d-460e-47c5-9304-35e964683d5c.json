@@ -1,0 +1,30 @@
+{
+  "id": "cfe7e32d-460e-47c5-9304-35e964683d5c",
+  "fio": "Akbarov Ulugbek Kaxardjanovich",
+  "street": "Poloson ",
+  "mfyNomi": "Poloson Mfy",
+  "murojaatfrom": "O‘zbekiston Respublikasi Prezident huzuridagi Ijtimoiy himoya milliy Agentligi Andijon viloyat boshqarmasi Andijon tuman “Inson” Ijtimoiy xizmatlar markazi Direktorining sayyor qabuli",
+  "murojaatRaqami": "9/12-15824",
+  "murojaatVaqti": "2026-09-04",
+  "arizaMaqsadi": "kam ta'minlangan oilalarga bolalar nafaqasi",
+  "arizaVaqti": "2026-07-07",
+  "arizaID": "32586141",
+  "template": "rad",
+  "isQayta": false,
+  "tasdiqMalumotlari": {
+    "is": false,
+    "tasdiqSanasi": "",
+    "tolovSanasi": "",
+    "tolovSum": "",
+    "xsobraqam": ""
+  },
+  "radSabablari": {
+    "uydaEmasRad": false,
+    "norasmiyRad": true,
+    "uyRad": [],
+    "avtoRad": [],
+    "rasmiyRad": []
+  },
+  "createdAt": "2026-09-08 11:36:10",
+  "createdAtDate": "2026-09-08"
+}

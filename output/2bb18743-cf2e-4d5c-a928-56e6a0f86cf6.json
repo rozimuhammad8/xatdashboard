@@ -1,0 +1,23 @@
+{
+  "id": "2bb18743-cf2e-4d5c-a928-56e6a0f86cf6",
+  "fio": "Zakirova Feruza",
+  "street": "Yuksalish",
+  "mfyNomi": "Yuksalish",
+  "murojaatfrom": "O‘zbekiston Respublikasi Andijon tuman bosh prokuraturaga murojaat.gov.uz",
+  "murojaatRaqami": "30240/26",
+  "murojaatVaqti": "2026-04-09",
+  "arizaMaqsadi": "kam ta'minlangan oilalarga bolalar nafaqasi",
+  "arizaVaqti": "2025-11-13",
+  "arizaID": "28534624",
+  "template": "arizaKiritilmagan",
+  "isQayta": false,
+  "tasdiqMalumotlari": {
+    "is": false,
+    "tasdiqSanasi": "",
+    "tolovSanasi": "",
+    "tolovSum": "",
+    "xsobraqam": ""
+  },
+  "createdAt": "2026-08-26 17:01:13",
+  "createdAtDate": "2026-08-26"
+}

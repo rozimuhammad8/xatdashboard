@@ -1,0 +1,30 @@
+{
+  "id": "7bfb1cb7-7017-4a76-bc16-c44909869a0f",
+  "fio": "Qobilov Sanjarbek",
+  "street": "Boyto'Pi",
+  "mfyNomi": "Yangiobod",
+  "murojaatfrom": "O‘zbekiston Respublikasi Prezidentiga ishonch telefoni",
+  "murojaatRaqami": "409220/26",
+  "murojaatVaqti": "2026-07-22",
+  "arizaMaqsadi": "kam ta'minlangan oilalar bolalar nafaqasi",
+  "arizaVaqti": "2026-08-21",
+  "arizaID": "0",
+  "template": "rad",
+  "isQayta": false,
+  "tasdiqMalumotlari": {
+    "is": false,
+    "tasdiqSanasi": "",
+    "tolovSanasi": "",
+    "tolovSum": "",
+    "xsobraqam": ""
+  },
+  "radSabablari": {
+    "uydaEmasRad": false,
+    "norasmiyRad": true,
+    "uyRad": [],
+    "avtoRad": [],
+    "rasmiyRad": []
+  },
+  "createdAt": "2026-08-21 18:32:09",
+  "createdAtDate": "2026-08-21"
+}

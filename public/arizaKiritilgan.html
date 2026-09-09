@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ariza kiritilgan xati</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        body {
+            width: 100%;
+            min-height: 100vh;
+            background-color: #ddd;
+            display: flex;
+            justify-content: center;
+            padding: 25px 0;
+        }
+
+        .mainDiv {
+            width: 700px;
+            display: flex;
+            flex-direction: column;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 8px black;
+            padding: 15px;
+            gap: 12px;
+        }
+
+        p {
+            line-height: 17px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mainDiv" id="mainDiv">
+        <div id="loadingState" style="text-align:center;padding:40px;font-size:18px;color:#64748b;">📄 Xat
+            yuklanmoqda...</div>
+        <div id="contentState" style="display:none;">
+            <p style="margin-left: 300px; font-size: 14pt; font-weight: 800; text-align: center;" id="pochtaMalumotlar"></p>
+            <p style="font-size: 11pt; font-style: italic; margin-right: 300px" id="murojaatMalumotlar"></p>
+            <p style="text-indent: 3em; text-align: justify; font-size: 14pt;">Murojaatni ko&lsquo;rib chiqish jarayonida sizga O&lsquo;zbekiston Respublikasi Vazirlar Mahkamasining <b>2026-yil 29-yanvardagi</b> &ldquo;Ijtimoiy reestrga kiritilgan oilalarni qo&lsquo;llab-quvvatlash tizimini takomillashtirishning qo&lsquo;shimcha chora-tadbirlari to&lsquo;g&lsquo;risida&rdquo;gi <b>35-son</b> qaroriga asosan, <b>bolalar nafaqasi va moddiy yordamlar faqat Ijtimoiy reestrga kiritilgan oilalarga tayinlanishi</b> tushuntirildi.</p>
+            <p style="text-indent: 3em; text-align: justify; font-size: 14pt;">Shuningdek, mazkur qarorning <b>2-bob 7-bandi</b>ga ko&lsquo;ra, <i>ariza beruvchi davlat xizmatidan foydalanishdan uning har qanday bosqichida bosh tortish huquqiga ega</i>. Bundan tashqari, <b>11-band</b>ga muvofiq, <i>kam ta&rsquo;minlangan oilalarga bolalar nafaqasi tayinlash uchun kelib tushgan ariza uch ish kuni ichida o&lsquo;rganilib, ariza beruvchining xonadoniga borilgan holda, u yoki muomalaga layoqatli oila a&rsquo;zosi ishtirokida Nizomning 3-ilovasiga muvofiq savolnoma axborot modulida elektron shaklda to&lsquo;ldirilishi belgilangan</i>.</p>
+            <p style="text-indent: 3em; text-align: justify; font-size: 14pt;" id="arizaMalumotlari"></p>
+            <p style="text-indent: 3em; text-align: justify; font-size: 14pt;">Murojaatingiz yuzasidan qabul qilingan qarordan qoniqish hosil qilmagan taqdiringizda O&lsquo;zbekiston Respublikasining &ldquo;Jismoniy va yuridik shaxslarning murojaatlari to&lsquo;g&lsquo;risida&rdquo;gi Qonuniga ko&lsquo;ra yuqori turuvchi tashkilotga shikoyat qilishingiz mumkinligi haqida ogohlantirib o&lsquo;taman.</p>
+        </div>
+    </div>
+
+    <script>
+        var oylar = ["yanvar", "fevral", "mart", "aprel", "may", "iyun", "iyul", "avgust", "sentyabr", "oktyabr", "noyabr", "dekabr"];
+
+        // ============================================================
+        // URL dan ID ni olish
+        // ============================================================
+        function getUrlParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // ============================================================
+        // XATNI YUKLASH
+        // ============================================================
+        async function loadLetter() {
+            const id = getUrlParam('id');
+            if (!id) {
+                document.getElementById('loadingState').innerHTML = '❌ Xat ID si topilmadi!';
+                return;
+            }
+
+            try {
+                const res = await fetch(`/api/letters/${id}`);
+                const result = await res.json();
+
+                if (!result.success) {
+                    document.getElementById('loadingState').innerHTML = '❌ Xat topilmadi!';
+                    return;
+                }
+
+                const data = result.data;
+                renderLetter(data);
+
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('contentState').style.display = 'block';
+
+            } catch (e) {
+                console.error('Xat yuklashda xatolik:', e);
+                document.getElementById('loadingState').innerHTML = '❌ Xatni yuklashda xatolik yuz berdi!';
+            }
+        }
+
+        // ============================================================
+        // XATNI CHIQARISH
+        // ============================================================
+        function renderLetter(data) {
+            var pochtaMalumotlar = `Andijon tumani, ${data.mfyNomi || ''} MFY, ${data.street ? data.street + " ko'chasida" : ""} yashovchi fuqaro ${data.fio || ''}ga`;
+            document.getElementById("pochtaMalumotlar").innerHTML = pochtaMalumotlar;
+
+            var murojaatDate = data.murojaatVaqti ? data.murojaatVaqti.split('-') : [];
+            var murojaatYear = murojaatDate[0] || '';
+            var murojaatDay = murojaatDate[2] || '';
+            var murojaatMonth = murojaatDate[1] ? oylar[parseInt(murojaatDate[1]) - 1] : '';
+            var murojaatMalumotlar = `Sizning ${data.murojaatfrom || ''} orqali ${murojaatYear}-yil ${murojaatDay}-${murojaatMonth} kuni yuborgan ${data.murojaatRaqami || ''} sonli murojaatingiz bo'yicha`;
+            document.getElementById("murojaatMalumotlar").innerHTML = murojaatMalumotlar;
+
+            var arizaDate = data.arizaVaqti ? data.arizaVaqti.split('-') : [];
+            var arizaYear = arizaDate[0] || '';
+            var arizaDay = arizaDate[2] || '';
+            var arizaMonth = arizaDate[1] ? oylar[parseInt(arizaDate[1]) - 1] : '';
+            var arizaMalumotlari = `Yuqoridagi qaror talablariga asosan, Sizning <b>${arizaYear}-yil ${arizaDay}-${arizaMonth} kuni</b> ${data.arizaMaqsadi || ''} olish uchun topshirgan arizangiz belgilangan tartibda <b>"Ijtimoiy himoya yagona reyestri"</b> AT dasturida <b>ID-${data.arizaID || ''}</b> bilan ro'yxatga olinganligini ma'lum qilamiz.`;
+            document.getElementById("arizaMalumotlari").innerHTML = arizaMalumotlari;
+        }
+
+        document.addEventListener('DOMContentLoaded', loadLetter);
+    </script>
+</body>
+
+</html>

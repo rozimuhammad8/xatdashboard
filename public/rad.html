@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rad etish xati</title>
+    <style>
+	*{
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+            	font-family: 'Times New Roman', Times, serif;
+	}
+	body{
+		width: 100%;
+		min-height: 100vh;
+		background-color: #ddd;
+            	display: flex;
+		justify-content: center;
+		padding: 25px 0;
+		position: relative;
+	}
+        .mainDiv{
+            	width: 700px;
+            	display: flex;
+		flex-direction: column;
+		background-color: #ffffff;
+		border-radius: 8px;
+		box-shadow: 0 0 8px black;
+		padding: 15px;
+		gap: 12px;
+        }
+	p{
+		line-height: 17px;
+	}
+	.back-btn {
+		position: fixed;
+		top: 20px;
+		left: 20px;
+		background: #0d6efd;
+		color: white;
+		border: none;
+		padding: 10px 20px;
+		border-radius: 8px;
+		cursor: pointer;
+		font-size: 14px;
+		font-weight: 600;
+		z-index: 100;
+		transition: 0.2s;
+	}
+	.back-btn:hover {
+		background: #0b5ed7;
+	}
+	@media print {
+		.back-btn { display: none; }
+	}
+    </style>
+</head>
+<body>
+    <button class="back-btn" onclick="window.location.href='/admin'">⬅ Orqaga</button>
+    
+    <div class="mainDiv" id="mainDiv">
+        <div id="loadingState" style="text-align:center;padding:40px;font-size:18px;color:#64748b;">📄 Xat yuklanmoqda...</div>
+        <div id="contentState" style="display:none;">
+            <p style="margin-left: 300px; font-size: 14pt; font-weight: 800; text-align: center;" id="pochtaMalumotlar"></p>
+            <p style="font-size: 11pt; font-style: italic; margin-right: 300px" id="murojaatMalumotlar"></p>
+            <p style="text-indent: 3em; text-align: justify; font-size: 14pt;">O‘zbekiston Respublikasi Prezidenti huzuridagi Ijtimoiy himoya milliy Agentligi Andijon viloyati boshqarmasi Andijon tumani “Inson” ijtimoiy xizmatlar markazi tomonidan murojaatingiz o‘rganib chiqildi.</p>
+            <p style="text-indent: 3em; text-align: justify; font-size: 14pt;">Sizga <b id="MfyNomi"></b> MFY mahallada kompleks xizmat ko‘rsatuvchi xodim, O‘zbekiston Respublikasi Prezidenti huzuridagi Ijtimoiy himoya milliy Agentligi Andijon viloyati boshqarmasi Andijon tumani “Inson” ijtimoiy xizmatlar markazi faoliyati, hamda xizmat turlarini yaqindan tanishtirildi.</p>
+            <p style="text-indent: 3em; text-align: justify; font-size: 14pt;">Murojaatni ko‘rib chiqish jarayonida sizga <b>O‘zbekiston Respublikasi Vazirlar Mahkamasining 2026-yil 29-yanvardagi “Ijtimoiy reestrga kiritilgan oilalarni qo‘llab-quvvatlash tizimini takomillashtirishning qo‘shimcha chora-tadbirlari to‘g‘risida”gi 35-son</b> qaroriga asosan, bolalar nafaqasi va moddiy yordamlar faqat Ijtimoiy reestrga kiritilgan oilalarga tayinlanishi tushuntirildi.</p>
+            <p style="text-indent: 3em; text-align: justify; font-size: 14pt;" id="ArizaMalumotlari"></p>
+            <div id="RadSabablari"></div>
+            <p style="text-indent: 3em; text-align: justify; font-size: 14pt;">Murojaatingiz yuzasidan qabul qilingan qarordan norozi bo'lsangiz O‘zbekiston Respublikasining “Jismoniy va yuridik shaxslarning murojaatlari to‘g‘risida”gi Qonuniga ko‘ra yuqori turuvchi tashkilotga shikoyat qilishingiz mumkinligi haqida ogohlantirib o‘taman.</p>
+            <p style="text-align: start; font-style:italic; font-size: 9pt;"><b>Ijrochi: D.Atamirzayev</b></p>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = '';
+        var oylar = ["yanvar","fevral", "mart", "aprel", "may", "iyun", "iyul", "avgust", "sentyabr", "oktyabr", "noyabr", "dekabr"];
+
+        // ============================================================
+        // URL dan ID ni olish
+        // ============================================================
+        function getUrlParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // ============================================================
+        // Yordamchi funksiyalar
+        // ============================================================
+        function toTitleCase(text) {
+            if (!text) return '';
+            return text.toLowerCase().replace(/(^|[.\s])([a-zа-яўқғҳ])/giu, function(_, p1, p2) {
+                return p1 + p2.toUpperCase();
+            });
+        }
+
+        function formatCarNumber(carNumber) {
+            if (!carNumber) return '';
+            return carNumber.replace(/^(\d+)([A-Z])(\d+)([A-Z]+)$/, '$1 $2 $3 $4');
+        }
+
+        function generateIncomeText(data) {
+            if (!data || !data.length) return '';
+
+            var owners = [];
+            var organizations = [];
+            data.forEach(function(item) {
+                if (item.egasi && owners.indexOf(toTitleCase(item.egasi)) === -1) {
+                    owners.push(toTitleCase(item.egasi));
+                }
+                if (item.tashkilot && organizations.indexOf(toTitleCase(item.tashkilot)) === -1) {
+                    organizations.push(toTitleCase(item.tashkilot));
+                }
+            });
+
+            var incomes = data.map(function(item) {
+                var parts = item.davri.split(',');
+                var year = parts[1] ? parts[1].trim() : '';
+                var month = parts[0] ? toTitleCase(parts[0].trim()) : '';
+                var amount = Number(item.miqdori || 0).toLocaleString('uz-UZ');
+                return year + '-yil ' + month + ' oyi uchun ' + amount + ' so\'m';
+            });
+
+            return organizations.join(' va ') + ' tomonidan ' + owners.join(' va ') + 'ga ' + incomes.join(', ') + ' oylik daromad hisoblangan va bu minimal iste\'mol xarajatlaridan yuqori ekanligi.';
+        }
+
+        function carLength(avtoDatas) {
+            if (!avtoDatas || !avtoDatas.length) return '';
+            var returnData = '';
+            if (avtoDatas.length === 1) {
+                returnData = avtoDatas[0].avtoYil + '-yilda ishlab chiqarilgan davlat raqami <b>' + formatCarNumber(avtoDatas[0].avtoRaqam) + '</b> bo\'lgan <b>"' + avtoDatas[0].avtoModel + '"</b> rusumli avtomashina';
+            } else {
+                for (var i = 0; i < avtoDatas.length; i++) {
+                    var element = avtoDatas[i];
+                    returnData += (i === 0 ? '' : ' va ') + element.avtoYil + '-yilda ishlab chiqarilgan davlat raqami <b>' + formatCarNumber(element.avtoRaqam) + '</b> bo\'lgan <b>"' + element.avtoModel + '"</b> rusumli';
+                }
+                returnData += ' avtomashinalar';
+            }
+            return returnData;
+        }
+
+        function uyLength(uyDatas) {
+            if (!uyDatas || !uyDatas.length) return '';
+            var returnData = '';
+            if (uyDatas.length === 1) {
+                returnData = 'manzili ' + uyDatas[0].uyManzil + ' kadastr raqami ' + uyDatas[0].uyKadastr + ' bo\'lgan';
+            } else {
+                for (var i = 0; i < uyDatas.length; i++) {
+                    var element = uyDatas[i];
+                    returnData += (i === 0 ? 'M' : ' va m') + 'anzili ' + element.uyManzil + ' kadastr raqami ' + element.uyKadastr + ' bo\'lgan';
+                }
+                returnData += ' xonadonlar';
+            }
+            return returnData;
+        }
+
+        // ============================================================
+        // XATNI YUKLASH
+        // ============================================================
+        async function loadLetter() {
+            const id = getUrlParam('id');
+            if (!id) {
+                document.getElementById('loadingState').innerHTML = '❌ Xat ID si topilmadi!';
+                return;
+            }
+
+            try {
+                const res = await fetch(API_URL + '/api/letters/' + id);
+                const result = await res.json();
+
+                if (!result.success) {
+                    document.getElementById('loadingState').innerHTML = '❌ Xat topilmadi!';
+                    return;
+                }
+
+                const data = result.data;
+                renderLetter(data);
+                
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('contentState').style.display = 'block';
+
+            } catch (e) {
+                console.error('Xat yuklashda xatolik:', e);
+                document.getElementById('loadingState').innerHTML = '❌ Xatni yuklashda xatolik yuz berdi!';
+            }
+        }
+
+        // ============================================================
+        // XATNI CHIQARISH
+        // ============================================================
+        function renderLetter(data) {
+            var rad = data.radSabablari || {};
+            var radSabablari = '';
+
+            // Pochta ma'lumotlari
+            var pochtaMalumotlar = 'Andijon tumani, ' + (data.mfyNomi || '') + ' MFY, ' + (data.street ? data.street + ' ko\'chasida' : '') + ' yashovchi fuqaro ' + (data.fio || '') + 'ga';
+            document.getElementById("pochtaMalumotlar").innerHTML = pochtaMalumotlar;
+
+            // Murojaat ma'lumotlari - yyyy-MM-dd formatidan o'qiydi
+            var murojaatDate = data.murojaatVaqti ? data.murojaatVaqti.split('-') : [];
+            var murojaatYear = murojaatDate[0] || '';
+            var murojaatDay = murojaatDate[2] || '';
+            var murojaatMonth = murojaatDate[1] ? oylar[parseInt(murojaatDate[1]) - 1] : '';
+            var murojaatMalumotlar = 'Sizning ' + (data.murojaatfrom || '') + ' orqali ' + murojaatYear + '-yil ' + murojaatDay + '-' + murojaatMonth + ' kuni yuborgan ' + (data.murojaatRaqami || '') + ' sonli murojaatingiz bo\'yicha';
+            document.getElementById("murojaatMalumotlar").innerHTML = murojaatMalumotlar;
+
+            // MFY nomi
+            document.getElementById("MfyNomi").innerHTML = data.mfyNomi || '';
+
+            // Ariza ma'lumotlari - yyyy-MM-dd formatidan o'qiydi
+            var arizaDate = data.arizaVaqti ? data.arizaVaqti.split('-') : [];
+            var arizaYear = arizaDate[0] || '';
+            var arizaDay = arizaDate[2] || '';
+            var arizaMonth = arizaDate[1] ? oylar[parseInt(arizaDate[1]) - 1] : '';
+            var isQaytaText = data.isQayta ? 'qayta' : '';
+            var ArizaMalumotlari = 'Nizom talabalariga asosan sizning ' + (data.arizaMaqsadi || '') + ' uchun berilgan ' + arizaYear + '-yil ' + arizaDay + '-' + arizaMonth + ' kungi arizangiz va unga ilova qilingan ma\'lumotlari «Ijtimoiy himoya yagona reyestri» axborot tizimiga <b>' + (data.arizaID || '') + '-ID</b> raqam bilan kiritilgan va dastur tomonidan ' + isQaytaText + ' o\'rganilganda quydagilar sababli rad etildi:';
+            document.getElementById("ArizaMalumotlari").innerHTML = ArizaMalumotlari;
+
+            // Rad etish sabablari
+            // 1. Avtomobil
+            if (rad.avtoRad && rad.avtoRad.length > 0) {
+                radSabablari += '<p style="text-indent: 3em; text-align: justify; font-size: 14pt;">Sizning oilangiz foydalanuvida bo\'lgan ' + carLength(rad.avtoRad) + ' mavjudligi sababli.<b>(Asos: VM 35-son qarori 4-bob v-band.)</b></p>';
+            }
+
+            // 2. Ko'chmas mulk
+            if (rad.uyRad && rad.uyRad.length > 0) {
+                radSabablari += '<p style="text-indent: 3em; text-align: justify; font-size: 14pt;">Sizning oilangiz nomiga rasmiylashtirilgan ' + rad.uyRad.length + ' ta ko\'chmas mulk (' + uyLength(rad.uyRad) + ') mavjudligi sababli.<b>(Asos: VM 35-son qarori 4-bob b-band.)</b></p>';
+            }
+
+            // 3. Rasmiy daromad
+            if (rad.rasmiyRad && rad.rasmiyRad.length > 0) {
+                radSabablari += '<p style="text-indent: 3em; text-align: justify; font-size: 14pt;">' + generateIncomeText(rad.rasmiyRad) + '<b>(Asos: VM 35-son qarori 4-bob a-band.)</b></p>';
+            }
+
+            // 4. Norasmiy daromad
+            if (rad.norasmiyRad) {
+                radSabablari += '<p style="text-indent: 3em; text-align: justify; font-size: 14pt;">O\'rganish natijasida "mahalla yettiligi" tomonidan o\'tkazilgan so\'rovnoma xulosasida norasmiy daromad manbaiyga ega ekanligngiz "Ijtimoiy himoya yagona reyestri" axborot tizimiga kiritilganda minimal iste\'mol xarajatlaridan yuqori daromadingiz mavjudligi sababli.<b>(Asos: VM 35-son qarori 4-bob a-band.)</b></p>';
+            }
+
+            // 5. Uyda bo'lmagan
+            if (rad.uydaEmasRad) {
+                radSabablari += '<p style="text-indent: 3em; text-align: justify; font-size: 14pt;">Ijtimoiy xodim tomonidan yashash sharoitini o\'rganish maqsadida amalga oshirilgan tashrif davomida sizni yashash manzilida mavjud bo\'lmaganligi sababli ijtimoiy holatini o\'rganish imkoni bo\'lmadi. Natijada murojaat bo\'yicha zarur o\'rganish yakunlanmaganligi sababli ijobiy qaror qabul qilishning imkoni bo\'lmagani.</p>';
+            }
+
+            document.getElementById("RadSabablari").innerHTML = radSabablari;
+        }
+
+        // ============================================================
+        // BOSHLANG'ICH
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', loadLetter);
+    </script>
+</body>
+</html>

@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IHMA - Admin Panel</title>
+    <style>
+        /* Umumiy stillar */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #eef3f8;
+            color: #1e293b;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        header h1 {
+            color: #0d6efd;
+            font-size: 28px;
+        }
+
+        header p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .header-links {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn-admin {
+            background: #8b5cf6;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .btn-admin:hover {
+            background: #7c3aed;
+        }
+
+        .btn-primary {
+            background: #0d6efd;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: #0b5ed7;
+        }
+
+        .status {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e5e7eb;
+        }
+
+        .card h2 {
+            margin-bottom: 20px;
+            color: #0f172a;
+            font-size: 22px;
+        }
+
+        /* Statistika */
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .stat-card .number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #0d6efd;
+        }
+
+        .stat-card .label {
+            font-size: 14px;
+            color: #64748b;
+            margin-top: 5px;
+        }
+
+        /* Qidiruv */
+        .search-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: flex-end;
+        }
+
+        .search-filters .form-group {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .search-filters label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 4px;
+        }
+
+        .search-filters input,
+        .search-filters select {
+            width: 100%;
+            padding: 8px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            height: 40px;
+            transition: 0.25s;
+        }
+
+        .search-filters input:focus,
+        .search-filters select:focus {
+            outline: none;
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.12);
+        }
+
+        .btn-reset {
+            background: #e2e8f0;
+            color: #1e293b;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            height: 40px;
+            transition: 0.25s;
+        }
+
+        .btn-reset:hover {
+            background: #cbd5e1;
+        }
+
+        /* Jadval */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th {
+            background: #f8fafc;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: middle;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            margin: 2px;
+        }
+
+        .badge-blue { background: #dbeafe; color: #1d4ed8; }
+        .badge-green { background: #d1fae5; color: #065f46; }
+        .badge-red { background: #fee2e2; color: #991b1b; }
+        .badge-yellow { background: #fef3c7; color: #92400e; }
+        .badge-purple { background: #ede9fe; color: #5b21b6; }
+        .badge-gray { background: #f1f5f9; color: #475569; }
+
+        /* Amallar */
+        .action-btns {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .action-btns button {
+            padding: 5px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 600;
+        }
+
+        .btn-download-letter { background: #16a34a; color: white; }
+        .btn-download-letter:hover { background: #15803d; }
+        .btn-download-letter:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-view-letter { background: #0d6efd; color: white; }
+        .btn-view-letter:hover { background: #0b5ed7; }
+        .btn-delete { background: #dc2626; color: white; }
+        .btn-delete:hover { background: #b91c1c; }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0 0 0;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .pagination button {
+            padding: 6px 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background: #f1f5f9;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1a1a2e;
+            color: white;
+            padding: 14px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.4s, opacity 0.4s;
+            z-index: 999;
+            max-width: 400px;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            background: #065f46;
+        }
+
+        .toast.error {
+            background: #991b1b;
+        }
+
+        .toast.warning {
+            background: #92400e;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .search-filters .form-group {
+                min-width: 100%;
+            }
+
+            .action-btns button {
+                font-size: 11px;
+                padding: 4px 10px;
+            }
+
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header-links {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .admin-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .pagination {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div>
+            <h1>⚙️ Admin Panel</h1>
+            <p>Barcha yaratilgan xatlarni boshqarish</p>
+        </div>
+        <div class="header-links">
+            <a href="/" class="btn-admin">📄 Xat yaratish</a>
+            <button class="btn-primary" onclick="loadAllData()">🔄 Yangilash</button>
+            <span id="backendStatus" class="status">🔗 Yuklanmoqda...</span>
+        </div>
+    </header>
+
+    <!-- Statistika -->
+    <div class="admin-stats" id="statsContainer">
+        <div class="stat-card">
+            <div class="number" id="statTotal">0</div>
+            <div class="label">📄 Jami xatlar</div>
+        </div>
+        <div class="stat-card">
+            <div class="number" id="statToday">0</div>
+            <div class="label">📅 Bugun</div>
+        </div>
+        <div class="stat-card">
+            <div class="number" id="statTemplates">0</div>
+            <div class="label">📋 Shablon turlari</div>
+        </div>
+        <div class="stat-card">
+            <div class="number" id="statReasons">0</div>
+            <div class="label">🏷️ Sabab turlari</div>
+        </div>
+    </div>
+
+    <!-- Qidiruv va filtrlar -->
+    <div class="card">
+        <h2>🔍 Filtrlar</h2>
+        <div class="search-filters">
+            <div class="form-group">
+                <label>Qidirish</label>
+                <input type="text" id="searchInput" placeholder="F.I.O, MFY, ko'cha yoki ID..." oninput="loadLetters()">
+            </div>
+            <div class="form-group">
+                <label>Shablon turi</label>
+                <select id="templateFilter" onchange="loadLetters()">
+                    <option value="">-- Barchasi --</option>
+                    <option value="rad">Rad etish</option>
+                    <option value="tasdiqlandi">Tasdiqlash</option>
+                    <option value="tayinlandi">Tayinlash</option>
+                    <option value="muddat">Muddat sorash</option>
+                    <option value="arizaKiritilmagan">Ariza kiritilmagan</option>
+                    <option value="arizaKiritilgan">Ariza kiritilgan</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Boshlanish sanasi</label>
+                <input type="date" id="fromDate" onchange="loadLetters()">
+            </div>
+            <div class="form-group">
+                <label>Tugash sanasi</label>
+                <input type="date" id="toDate" onchange="loadLetters()">
+            </div>
+            <div class="form-group" style="flex:0 0 auto;">
+                <button class="btn-reset" onclick="clearFilters()">🧹 Tozalash</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Xatlar jadvali -->
+    <div class="card">
+        <h2>📋 Xatlar ro'yxati</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>F.I.O</th>
+                        <th>MFY / Ko'cha</th>
+                        <th>Sabablar</th>
+                        <th>Shablon</th>
+                        <th>Yaratilgan</th>
+                        <th>Amallar</th>
+                    </tr>
+                </thead>
+                <tbody id="lettersBody">
+                    <tr>
+                        <td colspan="7" style="text-align:center;padding:40px;">
+                            <div class="empty-state">
+                                <div class="icon">📭</div>
+                                <p>Hali hech qanday xat yaratilmagan</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="pagination">
+            <div>
+                <span id="paginationInfo">0 ta xat</span>
+            </div>
+            <div>
+                <button id="prevPage" onclick="changePage(-1)" disabled>◀ Oldingi</button>
+                <span id="pageInfo">1 / 1</span>
+                <button id="nextPage" onclick="changePage(1)" disabled>Keyingi ▶</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+    const API_URL = '';
+    let currentPage = 0;
+    const pageSize = 20;
+    let totalLetters = 0;
+
+    // ============================================================
+    // TOAST
+    // ============================================================
+    function showToast(message, type) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = 'toast show ' + (type || '');
+        clearTimeout(toast._timeout);
+        toast._timeout = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 4000);
+    }
+
+    // ============================================================
+    // BACKEND STATUS
+    // ============================================================
+    async function checkBackend() {
+        const statusEl = document.getElementById('backendStatus');
+        try {
+            const res = await fetch(`${API_URL}/api/health`);
+            if (res.ok) {
+                const data = await res.json();
+                statusEl.innerHTML = `✅ Backend: ${data.totalLetters || 0} ta xat`;
+                statusEl.style.color = '#16a34a';
+            } else {
+                statusEl.innerHTML = '❌ Backend: Xatolik';
+                statusEl.style.color = '#dc2626';
+            }
+        } catch (e) {
+            statusEl.innerHTML = '❌ Backend: O\'chirilgan';
+            statusEl.style.color = '#dc2626';
+            showToast('⚠️ Backend server ishlamayapti!', 'error');
+        }
+    }
+
+    // ============================================================
+    // STATISTIKA
+    // ============================================================
+    async function loadStats() {
+        try {
+            const res = await fetch(`${API_URL}/api/stats`);
+            const result = await res.json();
+            
+            if (result.success) {
+                const stats = result.stats || {};
+                document.getElementById('statTotal').textContent = stats.total || 0;
+                
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('statToday').textContent = stats.byDate?.[today] || 0;
+                
+                const templates = Object.keys(stats.byTemplate || {});
+                document.getElementById('statTemplates').textContent = templates.length || 0;
+            }
+        } catch (e) {
+            console.error('Statistika yuklashda xatolik:', e);
+        }
+    }
+
+    // ============================================================
+    // XATLARNI YUKLASH
+    // ============================================================
+    async function loadLetters() {
+        try {
+            const search = document.getElementById('searchInput').value;
+            const fromDate = document.getElementById('fromDate').value;
+            const toDate = document.getElementById('toDate').value;
+            const template = document.getElementById('templateFilter').value;
+
+            let url = `${API_URL}/api/letters?limit=${pageSize}&offset=${currentPage * pageSize}`;
+            if (search) url += `&search=${encodeURIComponent(search)}`;
+            if (fromDate) url += `&fromDate=${fromDate}`;
+            if (toDate) url += `&toDate=${toDate}`;
+            if (template) url += `&template=${template}`;
+
+            const res = await fetch(url);
+            const result = await res.json();
+
+            if (result.success) {
+                totalLetters = result.total;
+                renderLetters(result.data);
+                updatePagination();
+                document.getElementById('paginationInfo').textContent = `${result.total} ta xat`;
+            } else {
+                showToast('❌ Xatlarni yuklashda xatolik!', 'error');
+            }
+        } catch (e) {
+            console.error('Xatlarni yuklashda xatolik:', e);
+            showToast('❌ Xatlarni yuklashda xatolik!', 'error');
+        }
+    }
+
+    // ============================================================
+    // XATLARNI JADVALGA CHIQARISH
+    // ============================================================
+    function renderLetters(letters) {
+        const tbody = document.getElementById('lettersBody');
+        
+        if (!letters || letters.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" style="text-align:center;padding:40px;">
+                        <div class="empty-state">
+                            <div class="icon">📭</div>
+                            <p>Xatlar topilmadi</p>
+                        </div>
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        const reasonColors = {
+            "Uyda bo'lmagan": 'badge-yellow',
+            "Ko'chmas mulk": 'badge-blue',
+            "Avtomobil": 'badge-purple',
+            "Rasmiy daromad": 'badge-green',
+            "Norasmiy daromad": 'badge-red'
+        };
+
+        const templateNames = {
+            'rad_etish': '❌ Rad etish',
+            'tasdiqlash': '✅ Tasdiqlash',
+            'tayinlash': '📋 Tayinlash',
+            'muddat_sorash': '⏳ Muddat sorash'
+        };
+
+        tbody.innerHTML = letters.map((letter, index) => {
+            const reasons = letter.reasons || [];
+            const badges = reasons.map(r => 
+                `<span class="badge ${reasonColors[r] || 'badge-gray'}">${r}</span>`
+            ).join(' ');
+
+            const templateName = templateNames[letter.template] || letter.template || '-';
+
+            return `
+                <tr>
+                    <td>${currentPage * pageSize + index + 1}</td>
+                    <td><strong>${letter.fio || '-'}</strong></td>
+                    <td>${letter.mfyNomi || letter.mfy || '-'}<br><small style="color:#64748b;">${letter.street || '-'}</small></td>
+                    <td>${badges || '-'}</td>
+                    <td><span class="badge badge-gray">${templateName}</span></td>
+                    <td><small>${letter.createdAt || '-'}</small></td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn-download-letter" id="download-${letter.id}" onclick="downloadLetter('${letter.id}')">⬇ Yuklab olish</button>
+                            <button class="btn-view-letter" onclick="viewLetter('${letter.id}', '${letter.template}')">📄 Ko'rish</button>
+                            <button class="btn-delete" onclick="deleteLetter('${letter.id}')">🗑 O'chirish</button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    // ============================================================
+    // PAGINATION
+    // ============================================================
+    function updatePagination() {
+        const totalPages = Math.ceil(totalLetters / pageSize);
+        document.getElementById('pageInfo').textContent = `${currentPage + 1} / ${totalPages || 1}`;
+        document.getElementById('prevPage').disabled = currentPage === 0;
+        document.getElementById('nextPage').disabled = currentPage >= totalPages - 1 || totalPages === 0;
+    }
+
+    function changePage(delta) {
+        const totalPages = Math.ceil(totalLetters / pageSize);
+        const newPage = currentPage + delta;
+        if (newPage < 0 || newPage >= totalPages) return;
+        currentPage = newPage;
+        loadLetters();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ============================================================
+    // XATNI KO'RISH - YANGI OYNADA OCHISH
+    // ============================================================
+    function viewLetter(id, template) {
+        window.open(`/${template}?id=${id}`, '_blank');
+    }
+
+    // ============================================================
+    // XATNI WORD (.docx) FORMATIDA YUKLAB OLISH
+    // Namunadagi (exmple/*.docx) dizayn va formatda, shu yozuvning
+    // o'ziga xos ma'lumotlari bilan to'ldirilgan hujjat yaratiladi.
+    // ============================================================
+    async function downloadLetter(id) {
+        const btn = document.getElementById(`download-${id}`);
+        const originalText = btn ? btn.textContent : '';
+        if (btn) {
+            btn.disabled = true;
+            btn.textContent = '⏳ Tayyorlanmoqda...';
+        }
+
+        try {
+            const res = await fetch(`${API_URL}/api/letters/${id}/download-docx`);
+            if (!res.ok) {
+                let message = 'Word faylini yaratishda xatolik';
+                try {
+                    const err = await res.json();
+                    message = err.error || message;
+                } catch (_) { /* javob JSON emas */ }
+                throw new Error(message);
+            }
+
+            const blob = await res.blob();
+
+            let filename = `xat_${id}.docx`;
+            const disposition = res.headers.get('Content-Disposition') || '';
+            const utf8Match = disposition.match(/filename\*=UTF-8''([^;]+)/i);
+            const plainMatch = disposition.match(/filename="?([^";]+)"?/i);
+            if (utf8Match) {
+                filename = decodeURIComponent(utf8Match[1]);
+            } else if (plainMatch) {
+                filename = plainMatch[1];
+            }
+
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+
+            showToast('✅ Word fayli yuklab olindi!', 'success');
+        } catch (e) {
+            console.error('Word faylini yuklab olishda xatolik:', e);
+            showToast('❌ Word faylini yuklab olishda xatolik!', 'error');
+        } finally {
+            if (btn) {
+                btn.disabled = false;
+                btn.textContent = originalText || '⬇ Yuklab olish';
+            }
+        }
+    }
+
+    // ============================================================
+    // XATNI O'CHIRISH
+    // ============================================================
+    async function deleteLetter(id) {
+        if (!confirm('Ushbu xatni o\'chirmoqchimisiz?')) return;
+
+        try {
+            const res = await fetch(`${API_URL}/api/letters/${id}`, {
+                method: 'DELETE'
+            });
+            const result = await res.json();
+            
+            if (result.success) {
+                showToast('✅ Xat o\'chirildi!', 'success');
+                loadAllData();
+            } else {
+                showToast('❌ Xat o\'chirishda xatolik!', 'error');
+            }
+        } catch (e) {
+            showToast('❌ Xat o\'chirishda xatolik!', 'error');
+        }
+    }
+
+    // ============================================================
+    // FILTRLARNI TOZALASH
+    // ============================================================
+    function clearFilters() {
+        document.getElementById('searchInput').value = '';
+        document.getElementById('fromDate').value = '';
+        document.getElementById('toDate').value = '';
+        document.getElementById('templateFilter').value = '';
+        currentPage = 0;
+        loadLetters();
+    }
+
+    // ============================================================
+    // HAMMA MA'LUMOTLARNI YANGILASH
+    // ============================================================
+    function loadAllData() {
+        loadStats();
+        loadLetters();
+        checkBackend();
+        showToast('🔄 Ma\'lumotlar yangilandi', 'warning');
+    }
+
+    // ============================================================
+    // BOSHLANG'ICH
+    // ============================================================
+    console.log('⚙️ IHMA Admin Panel yuklandi!');
+    console.log('📡 API URL:', API_URL);
+    
+    checkBackend();
+    loadStats();
+    loadLetters();
+    
+    setInterval(() => {
+        checkBackend();
+        loadStats();
+    }, 30000);
+</script>
+
+</body>
+</html>

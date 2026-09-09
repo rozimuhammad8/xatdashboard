@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muddat so'rash xati</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        body {
+            width: 100%;
+            min-height: 100vh;
+            background-color: #ddd;
+            display: flex;
+            justify-content: center;
+            padding: 25px 0;
+        }
+
+        .mainDiv {
+            width: 700px;
+            display: flex;
+            flex-direction: column;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 8px black;
+            padding: 15px;
+            gap: 12px;
+        }
+
+        p {
+            line-height: 17px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mainDiv" id="mainDiv">
+        <div id="loadingState" style="text-align:center;padding:40px;font-size:18px;color:#64748b;">📄 Xat
+            yuklanmoqda...</div>
+        <div id="contentState" style="display:none;">
+            <p style="margin-left: 300px; font-size: 14pt; font-weight: 800; text-align: center;" id="pochtaMalumotlar"></p>
+            <p style="font-size: 11pt; font-style: italic; margin-right: 300px" id="murojaatMalumotlar"></p>
+            <p style="text-indent: 3em; text-align: justify; font-size: 14pt;">O‘zbekiston Respublikasi Prezidenti huzuridagi Ijtimoiy himoya milliy agentligi Andijon viloyati Andijon  tuman “Inson” ijtimoiy xizmatlar markazi <b id="arizaIdB">ArizaID</b>-sonli murojaatingiz yuzasidan Andijon tuman “Inson” ijtimoiy xizmatlar markazi quyidagilar ma’lum qilinadi.</p>
+
+            <p style="text-indent: 3em; text-align: justify; font-size: 14pt;">Mazkur murojaatingiz bo‘yicha qo‘shimcha o‘rganish talab etilayotganligi sababli, O‘zbekiston Respublikasi “Jismoniy va yuridik shaxslarning murojaatlari to‘g‘risida”gi O‘RQ-445-son Qonunning  28-moddasiga muvofiq murojaatni ko‘rib chiqish muddati uzaytirilganligini bildiramiz.</p>
+            <p style="text-indent: 3em; text-align: justify; font-size: 14pt;" id="qoshimchaMalumot"></p>
+            <p style="text-align: start; font-style:italic; font-size: 9pt;"><b>Ijrochi: D.Atamirzayev</b></p>
+        </div>
+    </div>
+
+    <script>
+        var oylar = ["yanvar", "fevral", "mart", "aprel", "may", "iyun", "iyul", "avgust", "sentyabr", "oktyabr", "noyabr", "dekabr"];
+
+        // ============================================================
+        // URL dan ID ni olish
+        // ============================================================
+        function getUrlParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // ============================================================
+        // XATNI YUKLASH
+        // ============================================================
+        async function loadLetter() {
+            const id = getUrlParam('id');
+            if (!id) {
+                document.getElementById('loadingState').innerHTML = '❌ Xat ID si topilmadi!';
+                return;
+            }
+
+            try {
+                const res = await fetch(`/api/letters/${id}`);
+                const result = await res.json();
+
+                if (!result.success) {
+                    document.getElementById('loadingState').innerHTML = '❌ Xat topilmadi!';
+                    return;
+                }
+
+                const data = result.data;
+                renderLetter(data);
+
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('contentState').style.display = 'block';
+
+            } catch (e) {
+                console.error('Xat yuklashda xatolik:', e);
+                document.getElementById('loadingState').innerHTML = '❌ Xatni yuklashda xatolik yuz berdi!';
+            }
+        }
+
+        // ============================================================
+        // XATNI CHIQARISH
+        // ============================================================
+        function renderLetter(data) {
+            // Pochta ma'lumotlari
+            var pochtaMalumotlar = `Andijon tumani, ${data.mfyNomi || ''} MFY, ${data.street ? data.street + " ko'chasida" : ""} yashovchi fuqaro ${data.fio || ''}ga`;
+            document.getElementById("pochtaMalumotlar").innerHTML = pochtaMalumotlar;
+
+            // Murojaat ma'lumotlari
+            var murojaatDate = data.murojaatVaqti ? data.murojaatVaqti.split('-') : [];
+            var murojaatYear = murojaatDate[0] || '';
+            var murojaatDay = murojaatDate[2] || '';
+            var murojaatMonth = murojaatDate[1] ? oylar[parseInt(murojaatDate[1]) - 1] : '';
+            var murojaatMalumotlar = `Sizning ${data.murojaatfrom || ''} orqali ${murojaatYear}-yil ${murojaatDay}-${murojaatMonth} kuni yuborgan ${data.murojaatRaqami || ''} sonli murojaatingiz bo’yicha`;
+            document.getElementById("murojaatMalumotlar").innerHTML = murojaatMalumotlar;
+            document.getElementById("arizaIdB").innerHTML = data.murojaatRaqami
+
+            // Qo'shimcha ma'lumot (agar kiritilgan bo'lsa)
+            var qoshimchaEl = document.getElementById("qoshimchaMalumot");
+            if (data.qoshimchaMalumot) {
+                qoshimchaEl.innerHTML = data.qoshimchaMalumot;
+                qoshimchaEl.style.display = '';
+            } else {
+                qoshimchaEl.style.display = 'none';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', loadLetter);
+    </script>
+</body>
+
+</html>

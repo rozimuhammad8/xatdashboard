@@ -1,0 +1,23 @@
+{
+  "id": "36d42fc1-470d-4067-8a7d-39ce7284a031",
+  "fio": "Nazarova Zulfiyaxon",
+  "street": "Beshkaram",
+  "mfyNomi": "Qo'Shchinor",
+  "murojaatfrom": "O‘zbekiston Respublikasi Prezidentiga ishonch telefoni",
+  "murojaatRaqami": "442215/26",
+  "murojaatVaqti": "2026-08-10",
+  "arizaMaqsadi": "ka'm taminlagan oilalar uchun bolalar nafaqasi tayinlash",
+  "arizaVaqti": "2026-07-29",
+  "arizaID": "32040094",
+  "template": "arizaKiritilmagan",
+  "isQayta": false,
+  "tasdiqMalumotlari": {
+    "is": false,
+    "tasdiqSanasi": "",
+    "tolovSanasi": "",
+    "tolovSum": "",
+    "xsobraqam": ""
+  },
+  "createdAt": "2026-08-21 19:53:59",
+  "createdAtDate": "2026-08-21"
+}

@@ -1,0 +1,23 @@
+{
+  "id": "654beeb1-84ba-46e9-bbea-799fb048214c",
+  "fio": "Dadaboeva Barno",
+  "street": "Oyjamol",
+  "mfyNomi": "Oyjamol",
+  "murojaatfrom": "O‘zbekiston Respublikasi Andijon tuman bosh prokuraturaga murojaat.gov.uz",
+  "murojaatRaqami": "26253/26",
+  "murojaatVaqti": "2026-03-30",
+  "arizaMaqsadi": "kam ta'minlangan oilalarga bolalar nafaqasi",
+  "arizaVaqti": "2025-11-13",
+  "arizaID": "28534624",
+  "template": "arizaKiritilmagan",
+  "isQayta": false,
+  "tasdiqMalumotlari": {
+    "is": false,
+    "tasdiqSanasi": "",
+    "tolovSanasi": "",
+    "tolovSum": "",
+    "xsobraqam": ""
+  },
+  "createdAt": "2026-08-26 17:03:54",
+  "createdAtDate": "2026-08-26"
+}

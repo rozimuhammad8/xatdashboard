@@ -1,0 +1,48 @@
+{
+  "id": "ae53902c-b9ae-42c4-9b04-265b3ab91ab9",
+  "fio": "Qosimov Dilshodbek",
+  "street": "Baynalminal",
+  "mfyNomi": "Baxt",
+  "murojaatfrom": "O‘zbekiston Respublikasi Prezidentiga veb-sayt",
+  "murojaatRaqami": "105129-s/26",
+  "murojaatVaqti": "2026-08-02",
+  "arizaMaqsadi": "kam ta'minlangan oilalarga bolalar nafaqasi",
+  "arizaVaqti": "2026-07-31",
+  "arizaID": "32267068",
+  "template": "rad",
+  "isQayta": false,
+  "tasdiqMalumotlari": {
+    "is": false,
+    "tasdiqSanasi": "",
+    "tolovSanasi": "",
+    "tolovSum": "",
+    "xsobraqam": ""
+  },
+  "radSabablari": {
+    "uydaEmasRad": false,
+    "norasmiyRad": true,
+    "uyRad": [
+      {
+        "uyManzil": "",
+        "uyKadastr": ""
+      }
+    ],
+    "avtoRad": [
+      {
+        "avtoYil": "",
+        "avtoModel": "",
+        "avtoRaqam": ""
+      }
+    ],
+    "rasmiyRad": [
+      {
+        "egasi": "",
+        "miqdori": "",
+        "tashkilot": "",
+        "davri": ""
+      }
+    ]
+  },
+  "createdAt": "2026-09-08 09:16:35",
+  "createdAtDate": "2026-09-08"
+}

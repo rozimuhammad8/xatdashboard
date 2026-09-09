@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ariza kiritilmagan xati</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        body {
+            width: 100%;
+            min-height: 100vh;
+            background-color: #ddd;
+            display: flex;
+            justify-content: center;
+            padding: 25px 0;
+        }
+
+        .mainDiv {
+            width: 700px;
+            display: flex;
+            flex-direction: column;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 8px black;
+            padding: 15px;
+            gap: 12px;
+        }
+
+        p {
+            line-height: 17px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mainDiv" id="mainDiv">
+        <div id="loadingState" style="text-align:center;padding:40px;font-size:18px;color:#64748b;">📄 Xat
+            yuklanmoqda...</div>
+        <div id="contentState" style="display:none;">
+            <p style="margin-left: 300px; font-size: 14pt; font-weight: 800; text-align: center;" id="pochtaMalumotlar"></p>
+            <p style="font-size: 11pt; font-style: italic; margin-right: 300px" id="murojaatMalumotlar"></p>
+            <p style="text-indent: 3em; text-align: justify; font-size: 14pt;">Murojaatingiz, Andijon tumani &ldquo;Inson&rdquo; ijtimoiy xizmatlar markazi xodimlari tomonidan o&lsquo;rganildi. O&lsquo;rganish davomida, Sizga O&lsquo;zbekiston Respublikasi Vazirlar Mahkamasining 2026 yil 29 yanvardagi &ldquo;Ijtimoiy reestrni yuritish tartibi to&lsquo;g&lsquo;risida&rdquo;gi 35-son qarori bilan tasdiqlangan Nizomning 1-ilova 2-bobida Oilani Reyestrga kiritish to&lsquo;g&lsquo;risidagi murojaatni ko&lsquo;rib chiqish tartibi belgilanganligi tushuntirildi.</p>
+            <p style="text-indent: 3em; text-align: justify; font-size: 14pt;">Ushbu nizomning 5-bandiga asosan Ariza beruvchi oilasini Reyestrga kiritish uchun vakolatli organga quyidagi shakllarda murojaat qiladi:</p>
+            <p style="text-indent: 3em; text-align: justify; font-size: 14pt;">davlat xizmatlari markazi yoki vakolatli organga borgan holda yoki yashash manzili bo&lsquo;yicha mahallaga biriktirilgan ijtimoiy xodim orqali;</p>
+            <p style="text-indent: 3em; text-align: justify; font-size: 14pt;">&ldquo;YAMIH&rdquo; AT, Yagona interaktiv davlat xizmatlari portali (keyingi o&lsquo;rinlarda &mdash; YIDXP) yoki &ldquo;Ijtimoiy karta&rdquo; mobil ilovasi orqali mustaqil ravishda.</p>
+            <p style="text-indent: 3em; text-align: justify; font-size: 14pt;">Har bir oila tomonidan Reyestrga kiritish uchun ariza topshirish bir oyda bir marta amalga oshirishligi belgilangan.</p>
+            <p style="text-indent: 3em; text-align: justify; font-size: 14pt;">Yuqoridagilardan kelib chiqqan holda Siz kam ta&rsquo;minlangan oilalarga bolalar nafaqasi yoki moddiy yordam tayinlashni so&lsquo;rab murojaat qilmaganligingizni ma&rsquo;lum qiladi.</p>
+            <p style="text-indent: 3em; text-align: justify; font-size: 14pt;">Murojaatingiz yuzasidan qabul qilingan qarordan qoniqish hosil qilmagan taqdiringizda O&lsquo;zbekiston Respublikasining &ldquo;Jismoniy va yuridik shaxslarning murojaatlari to&lsquo;g&lsquo;risida&rdquo;gi Qonuniga ko&lsquo;ra yuqori turuvchi tashkilotga shikoyat qilishingiz mumkinligi haqida ogohlantirib o&lsquo;taman.</p>
+            <p style="text-align: start; font-style:italic; font-size: 9pt;"><b>Ijrochi: D.Atamirzayev</b></p>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // URL dan ID ni olish
+        // ============================================================
+        function getUrlParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // ============================================================
+        // XATNI YUKLASH
+        // ============================================================
+        async function loadLetter() {
+            const id = getUrlParam('id');
+            if (!id) {
+                document.getElementById('loadingState').innerHTML = '❌ Xat ID si topilmadi!';
+                return;
+            }
+
+            try {
+                const res = await fetch(`/api/letters/${id}`);
+                const result = await res.json();
+
+                if (!result.success) {
+                    document.getElementById('loadingState').innerHTML = '❌ Xat topilmadi!';
+                    return;
+                }
+
+                const data = result.data;
+                renderLetter(data);
+
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('contentState').style.display = 'block';
+
+            } catch (e) {
+                console.error('Xat yuklashda xatolik:', e);
+                document.getElementById('loadingState').innerHTML = '❌ Xatni yuklashda xatolik yuz berdi!';
+            }
+        }
+
+        // ============================================================
+        // XATNI CHIQARISH
+        // ============================================================
+        function renderLetter(data) {
+            var pochtaMalumotlar = `Andijon tumani, ${data.mfyNomi || ''} MFY, ${data.street ? data.street + " ko'chasida" : ""} yashovchi fuqaro ${data.fio || ''}ga`;
+            document.getElementById("pochtaMalumotlar").innerHTML = pochtaMalumotlar;
+
+            var oylar = ["yanvar", "fevral", "mart", "aprel", "may", "iyun", "iyul", "avgust", "sentyabr", "oktyabr", "noyabr", "dekabr"];
+            var murojaatDate = data.murojaatVaqti ? data.murojaatVaqti.split('-') : [];
+            var murojaatYear = murojaatDate[0] || '';
+            var murojaatDay = murojaatDate[2] || '';
+            var murojaatMonth = murojaatDate[1] ? oylar[parseInt(murojaatDate[1]) - 1] : '';
+            var murojaatMalumotlar = `Sizning ${data.murojaatfrom || ''} orqali ${murojaatYear}-yil ${murojaatDay}-${murojaatMonth} kuni yuborgan ${data.murojaatRaqami || ''} sonli murojaatingiz bo'yicha`;
+            document.getElementById("murojaatMalumotlar").innerHTML = murojaatMalumotlar;
+        }
+
+        document.addEventListener('DOMContentLoaded', loadLetter);
+    </script>
+</body>
+
+</html>

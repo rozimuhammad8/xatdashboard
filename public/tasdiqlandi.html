@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasdiqlash xati</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        body {
+            width: 100%;
+            min-height: 100vh;
+            background-color: #ddd;
+            display: flex;
+            justify-content: center;
+            padding: 25px 0;
+        }
+
+        .mainDiv {
+            width: 700px;
+            display: flex;
+            flex-direction: column;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 8px black;
+            padding: 15px;
+            gap: 12px;
+        }
+
+        p {
+            line-height: 17px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mainDiv" id="mainDiv">
+        <div id="loadingState" style="text-align:center;padding:40px;font-size:18px;color:#64748b;">📄 Xat
+            yuklanmoqda...</div>
+        <div id="contentState" style="display:none;">
+            <p style="margin-left: 300px; font-size: 14pt; font-weight: 800; text-align: center;" id="pochtaMalumotlar"></p>
+            <p style="font-size: 11pt; font-style: italic; margin-right: 300px" id="murojaatMalumotlar"></p>
+            <p style="text-indent: 3em; text-align: justify; font-size: 14pt;">O‘zbekiston Respublikasi Prezidenti
+                huzuridagi Ijtimoiy himoya milliy Agentligi Andijon viloyati boshqarmasi Andijon tumani “Inson” ijtimoiy
+                xizmatlar markazi tomonidan murojaatingiz o‘rganib chiqildi.</p>
+            <p style="text-indent: 3em; text-align: justify; font-size: 14pt;">Murojaatni ko‘rib chiqish jarayonida
+                sizga
+                O‘zbekiston Respublikasi Vazirlar Mahkamasining 2026-yil 29-yanvardagi “Ijtimoiy reestrga kiritilgan
+                    oilalarni qo‘llab-quvvatlash tizimini takomillashtirishning qo‘shimcha chora-tadbirlari
+                    to‘g‘risida”gi
+                    <b>35-son</b> qarori bilan tasdiqlangan Nizomning 33-bandiga muvofiq quyidagilar ma’lum qilinadi.
+            </p>
+            <p style="text-indent: 3em; text-align: justify; font-size: 14pt;">Agar, oila a’zolariga to‘g‘ri keladigan
+                o‘rtacha oylik daromad minimal iste’mol xarajatlaridan yuqori bo‘lsa, ortiqcha ko‘chmas mulk yoki
+                daromad
+                keltiruvchi noturar ob’ektlar mavjud bo‘lsa, belgilangan muddatdan yangi transport vositalari yoki bir
+                nechta texnika vositalari bor bo‘lsa, shuningdek bank omonatlari yoki qimmatli qog‘ozlari belgilangan
+                miqdordan ortiq bo‘lsa yoxud qonunchilikda nazarda tutilgan boshqa holatlar <i>(jumladan, chet elga
+                ko‘chib ketish, jinoyat uchun jazo o‘tash, internat muassasalariga joylashish, murojaat talablariga
+                rioya qilmaslik yoki ariza beruvchining vafoti)</i> mavjud bo‘lganda kam ta’minlangan oilalarga bolalar
+                nafaqasi yoki moddiy yordam tayinlash rad etilishi yoki to’xtatilishi belgilangan.</p>
+            <p style="text-indent: 3em; text-align: justify; font-size: 14pt;" id="tasdiqMalumotlari"></p>
+            <p style="text-indent: 3em; text-align: justify; font-size: 14pt;" id="tolovMalumotlari"></p>
+            <p style="text-indent: 3em; text-align: justify; font-size: 14pt;"><b>Bolalar nafaqasi yoki moddiy yordam
+					to‘lovi Xalq bankining filiallari tomonidan belgilangan tartibda to‘lov oyining 4-sanasidan 27-sanasiga
+					qadar amalga oshiriladi. </b></p>
+            <p style="text-indent: 3em; text-align: justify; font-size: 14pt;">Murojaatingiz yuzasidan qabul qilingan
+                qarordan norozi bo'lsangiz O‘zbekiston Respublikasining “Jismoniy va yuridik shaxslarning murojaatlari
+                to‘g‘risida”gi Qonuniga ko‘ra yuqori turuvchi tashkilotga shikoyat qilishingiz mumkinligi haqida
+                ogohlantirib o‘taman.</p>
+            <p style="text-align: start; font-style:italic; font-size: 9pt;"><b>Ijrochi: D.Atamirzayev</b></p>
+        </div>
+    </div>
+
+    <script>
+        var oylar = ["yanvar", "fevral", "mart", "aprel", "may", "iyun", "iyul", "avgust", "sentyabr", "oktyabr", "noyabr", "dekabr"];
+
+        // ============================================================
+        // URL dan ID ni olish
+        // ============================================================
+        function getUrlParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // ============================================================
+        // "YYYY, OyNomi" formatidagi matnni (yil, oy) ga ajratish
+        // (tasdiqSanasi / tolovSanasi maydonlari sana emas, shu formatda kiritiladi)
+        // ============================================================
+        function parseYearMonth(value) {
+            if (!value) return { year: '', month: '' };
+            var parts = String(value).split(',');
+            var year = parts[0] ? parts[0].trim() : '';
+            var month = parts[1] ? parts[1].trim() : '';
+            if (!month && year) {
+                var bits = year.split(/\s+/);
+                if (bits.length >= 2) {
+                    year = bits[0];
+                    month = bits.slice(1).join(' ');
+                }
+            }
+            return { year: year, month: month.toLowerCase() };
+        }
+
+        // ============================================================
+        // '687 810.00', '476720,00', '1.450.543,00' kabi turli formatdagi
+        // summalarni ishonchli tarzda songa aylantirish
+        // ============================================================
+        function parseAmount(value) {
+            if (value === null || value === undefined || value === '') return 0;
+            if (typeof value === 'number') return value;
+            var text = String(value).trim().replace(/\s/g, '').replace(/ /g, '');
+            if (!text) return 0;
+            var lastSep = Math.max(text.lastIndexOf(','), text.lastIndexOf('.'));
+            var cleaned;
+            if (lastSep === -1) {
+                cleaned = text;
+            } else {
+                var fracPart = text.slice(lastSep + 1);
+                var intPart = text.slice(0, lastSep);
+                if (/^\d{1,2}$/.test(fracPart)) {
+                    cleaned = intPart.replace(/[.,]/g, '') + '.' + fracPart;
+                } else {
+                    cleaned = text.replace(/[.,]/g, '');
+                }
+            }
+            var n = parseFloat(cleaned);
+            return isNaN(n) ? 0 : n;
+        }
+
+        function formatMoney(value) {
+            var n = parseAmount(value);
+            var parts = n.toFixed(2).split('.');
+            var intPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+            return intPart + '.' + parts[1];
+        }
+
+        // ============================================================
+        // XATNI YUKLASH
+        // ============================================================
+        async function loadLetter() {
+            const id = getUrlParam('id');
+            if (!id) {
+                document.getElementById('loadingState').innerHTML = '❌ Xat ID si topilmadi!';
+                return;
+            }
+
+            try {
+                const res = await fetch(`/api/letters/${id}`);
+                const result = await res.json();
+
+                if (!result.success) {
+                    document.getElementById('loadingState').innerHTML = '❌ Xat topilmadi!';
+                    return;
+                }
+
+                const data = result.data;
+                renderLetter(data);
+
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('contentState').style.display = 'block';
+
+            } catch (e) {
+                console.error('Xat yuklashda xatolik:', e);
+                document.getElementById('loadingState').innerHTML = '❌ Xatni yuklashda xatolik yuz berdi!';
+            }
+        }
+
+        // ============================================================
+        // XATNI CHIQARISH
+        // ============================================================
+        function renderLetter(data) {
+            // Pochta ma'lumotlari
+            var pochtaMalumotlar = `Andijon tumani, ${data.mfyNomi || ''} MFY, ${data.street ? data.street + " ko'chasida" : ""} yashovchi fuqaro ${data.fio || ''}ga`;
+            document.getElementById("pochtaMalumotlar").innerHTML = pochtaMalumotlar;
+
+            // Murojaat ma'lumotlari
+            var murojaatDate = data.murojaatVaqti ? data.murojaatVaqti.split('-') : [];
+            var murojaatYear = murojaatDate[0] || '';
+            var murojaatDay = murojaatDate[2] || '';
+            var murojaatMonth = murojaatDate[1] ? oylar[parseInt(murojaatDate[1]) - 1] : '';
+            var murojaatMalumotlar = `Sizning ${data.murojaatfrom || ''} orqali ${murojaatYear}-yil ${murojaatDay}-${murojaatMonth} kuni yuborgan ${data.murojaatRaqami || ''} sonli murojaatingiz bo’yicha`;
+            document.getElementById("murojaatMalumotlar").innerHTML = murojaatMalumotlar;
+
+            // Tasdiqlash ma'lumotlari
+            var tasdiq = data.tasdiqMalumotlari || {};
+            var arizaDate = data.arizaVaqti ? data.arizaVaqti.split('-') : [];
+            var arizaYear = arizaDate[0] || '';
+            var arizaDay = arizaDate[2] || '';
+            var arizaMonth = arizaDate[1] ? oylar[parseInt(arizaDate[1]) - 1] : '';
+
+            var tasdiqSana = parseYearMonth(tasdiq.tasdiqSanasi);
+            var davrOy = tasdiqSana.month ? `${tasdiqSana.year}-yil ${tasdiqSana.month}` : `${arizaYear}-yil ${arizaMonth}`;
+
+            var tasdiqMalumotlari = `${data.fio || ''} sizning ${arizaYear}-yil ${arizaDay}-${arizaMonth} kunidan ${data.arizaMaqsadi || ''} tayinlash bo'yicha yuborgan arizangiz «Ijtimoiy himoya yagona reestri» axborot tizimiga <b>${data.arizaID || ''}-ID</b> raqam bilan kiritilgan va ${davrOy} oyidan ${data.arizaMaqsadi || ''} tayinlangan hamda Kambag'al oila toifasiga kiritilgan.`;
+            document.getElementById("tasdiqMalumotlari").innerHTML = tasdiqMalumotlari;
+
+            // To'lov ma'lumotlari
+            var tolovMalumotlariEl = document.getElementById("tolovMalumotlari");
+            if (tasdiq.tolovSum || tasdiq.xsobraqam) {
+                var tolovSana = parseYearMonth(tasdiq.tolovSanasi);
+                var davrTolov = tolovSana.month ? `${tolovSana.year}-yil ${tolovSana.month} oyi` : (davrOy ? `${davrOy} oyi` : 'tegishli davr');
+                tolovMalumotlariEl.innerHTML = `Sizga ${davrTolov} uchun ${tasdiq.xsobraqam || ''} hisob raqamiga <b>${formatMoney(tasdiq.tolovSum)}</b> so'm to'lab berilganligini ma’lum qilamiz.`;
+                tolovMalumotlariEl.style.display = '';
+            } else {
+                tolovMalumotlariEl.style.display = 'none';
+            }
+        }
+
+        // ============================================================
+        // BOSHLANG'ICH
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', loadLetter);
+    </script>
+</body>
+
+</html>

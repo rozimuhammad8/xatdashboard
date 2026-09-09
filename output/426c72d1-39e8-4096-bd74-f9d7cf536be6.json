@@ -1,0 +1,64 @@
+{
+  "id": "426c72d1-39e8-4096-bd74-f9d7cf536be6",
+  "fio": "Mullajonov",
+  "street": "ANist",
+  "mfyNomi": "Katta",
+  "murojaatfrom": "Xalq qabulxonasi",
+  "murojaatRaqami": "2312313",
+  "murojaatVaqti": "2026-09-09",
+  "arizaMaqsadi": "ad",
+  "arizaVaqti": "2026-09-09",
+  "arizaID": "ads",
+  "template": "rad",
+  "isQayta": false,
+  "tasdiqMalumotlari": {
+    "is": false,
+    "tasdiqSanasi": "",
+    "tolovSanasi": "",
+    "tolovSum": "",
+    "xsobraqam": ""
+  },
+  "radSabablari": {
+    "uydaEmasRad": false,
+    "norasmiyRad": false,
+    "uyRad": [
+      {
+        "uyManzil": "Islomobod MFY, Toshkent ko'chasi, 40a-uy, 24-xonadon",
+        "uyKadastr": "17:15:02:03:09:0014:0001:024"
+      },
+      {
+        "uyManzil": "Islomobod MFY, Toshkent ko'chasi, 40a-uy, 38-xonadon",
+        "uyKadastr": "17:15:02:03:09:0014:0001:038"
+      }
+    ],
+    "avtoRad": [
+      {
+        "avtoYil": "2021",
+        "avtoModel": "DAMAS",
+        "avtoRaqam": "60D266KB"
+      }
+    ],
+    "rasmiyRad": [
+      {
+        "egasi": "YULDASHEVA LATOFATXON MURATOVNA",
+        "miqdori": "1338363.0",
+        "tashkilot": "\"ANDIJON TUMAN MAKTABGACHA VA MAKTAB TA'LIMI BO'LIMI\" DM",
+        "davri": "Mart, 2026"
+      },
+      {
+        "egasi": "YULDASHEVA LATOFATXON MURATOVNA",
+        "miqdori": "1338363.0",
+        "tashkilot": "\"ANDIJON TUMAN MAKTABGACHA VA MAKTAB TA'LIMI BO'LIMI\" DM",
+        "davri": "Aprel, 2026"
+      },
+      {
+        "egasi": "YULDASHEVA LATOFATXON MURATOVNA",
+        "miqdori": "28977317.0",
+        "tashkilot": "\"ANDIJON TUMAN MAKTABGACHA VA MAKTAB TA'LIMI BO'LIMI\" DM",
+        "davri": "May, 2026"
+      }
+    ]
+  },
+  "createdAt": "2026-08-09 19:24:03",
+  "createdAtDate": "2026-08-09"
+}

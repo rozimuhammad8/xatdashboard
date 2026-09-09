@@ -1,0 +1,36 @@
+{
+  "id": "73bcf7ea-59c5-402b-8a31-6e0a58e0e7c6",
+  "fio": "Qurbonova Moxiraxon",
+  "street": "Porloq",
+  "mfyNomi": "Zangibobo",
+  "murojaatfrom": "O‘zbekiston Respublikasi Andijon tuman bosh prokuraturaga yozma murojaat",
+  "murojaatRaqami": "4-419853/26",
+  "murojaatVaqti": "2026-07-29",
+  "arizaMaqsadi": "kam ta'minlangan oilalarga bolalar nafaqasi",
+  "arizaVaqti": "2026-05-14",
+  "arizaID": "31355349",
+  "template": "rad",
+  "isQayta": false,
+  "tasdiqMalumotlari": {
+    "is": false,
+    "tasdiqSanasi": "",
+    "tolovSanasi": "",
+    "tolovSum": "",
+    "xsobraqam": ""
+  },
+  "radSabablari": {
+    "uydaEmasRad": false,
+    "norasmiyRad": false,
+    "uyRad": [],
+    "avtoRad": [
+      {
+        "avtoYil": "",
+        "avtoModel": "LASSETI",
+        "avtoRaqam": ""
+      }
+    ],
+    "rasmiyRad": []
+  },
+  "createdAt": "2026-08-24 18:25:01",
+  "createdAtDate": "2026-08-24"
+}

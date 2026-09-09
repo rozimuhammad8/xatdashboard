@@ -1,0 +1,23 @@
+{
+  "id": "d90fcf47-dbc2-4f54-ae8c-2864c24ae5bd",
+  "fio": "Quvondiqova Maftunaxon",
+  "street": "Matbuotchi",
+  "mfyNomi": "Nuxotak",
+  "murojaatfrom": "O‘zbekiston Respublikasi Andijon tuman bosh prokuraturaga murojaat.gov.uz",
+  "murojaatRaqami": "51024/26",
+  "murojaatVaqti": "2026-06-24",
+  "arizaMaqsadi": "kam ta'minlangan oilalarga bolalar nafaqasi",
+  "arizaVaqti": "2025-08-27",
+  "arizaID": "27127795",
+  "template": "tasdiqlandi",
+  "isQayta": false,
+  "tasdiqMalumotlari": {
+    "is": true,
+    "tasdiqSanasi": "2025, Sentyabr",
+    "tolovSanasi": "2026, Avgust",
+    "tolovSum": "297 950",
+    "xsobraqam": "22618000965077348201"
+  },
+  "createdAt": "2026-08-24 18:51:49",
+  "createdAtDate": "2026-08-24"
+}

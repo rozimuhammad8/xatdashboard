@@ -1,0 +1,23 @@
+{
+  "id": "a0697ff1-6548-4157-a385-ac956779ef28",
+  "fio": "Familya Ism",
+  "street": "Kocha",
+  "mfyNomi": "Mfy",
+  "murojaatfrom": "O‘zbekiston Respublikasi Prezidentiga veb-sayt",
+  "murojaatRaqami": "452015/26",
+  "murojaatVaqti": "2026-01-01",
+  "arizaMaqsadi": "kam ta'minlangan oilalarga bolalar nafaqasi",
+  "arizaVaqti": "2026-01-01",
+  "arizaID": "25412254",
+  "template": "arizaKiritilgan",
+  "isQayta": false,
+  "tasdiqMalumotlari": {
+    "is": false,
+    "tasdiqSanasi": "",
+    "tolovSanasi": "",
+    "tolovSum": "",
+    "xsobraqam": ""
+  },
+  "createdAt": "2026-08-28 18:57:05",
+  "createdAtDate": "2026-08-28"
+}

@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IHMA - Xat Yaratish Tizimi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #eef3f8;
+            color: #1e293b;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        header h1 {
+            color: #0d6efd;
+            font-size: 28px;
+        }
+
+        header p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .header-links {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn-admin {
+            background: #8b5cf6;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .btn-admin:hover {
+            background: #7c3aed;
+        }
+
+        .status {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e5e7eb;
+        }
+
+        .card h2 {
+            margin-bottom: 20px;
+            color: #0f172a;
+            font-size: 22px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            height: 44px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 0 14px;
+            font-size: 14px;
+            transition: 0.25s;
+            background: #fff;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.12);
+        }
+
+        .form-group .hint {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .reason {
+            border: 1px solid #dbe3ee;
+            border-radius: 12px;
+            margin-bottom: 14px;
+            overflow: hidden;
+        }
+
+        .reason>label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            cursor: pointer;
+            background: #f8fafc;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .reason>label:hover {
+            background: #eef4ff;
+        }
+
+        .reason input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .reason-content {
+            display: none;
+            padding: 18px;
+            border-top: 1px solid #e2e8f0;
+            animation: fade 0.25s;
+        }
+
+        .reason-content.show {
+            display: block;
+        }
+
+        @keyframes fade {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dynamic-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 14px;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .dynamic-item:hover {
+            border-color: #0d6efd;
+        }
+
+        .dynamic-item .remove-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #fee2e2;
+            color: #dc2626;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dynamic-item .remove-btn:hover {
+            background: #fecaca;
+            transform: scale(1.1);
+        }
+
+        .dynamic-item .item-number {
+            font-size: 13px;
+            font-weight: 700;
+            color: #0d6efd;
+            margin-bottom: 10px;
+            display: inline-block;
+            background: #eef4ff;
+            padding: 2px 12px;
+            border-radius: 20px;
+        }
+
+        .add-btn {
+            background: #eef4ff;
+            color: #0d6efd;
+            border: 2px dashed #0d6efd;
+            border-radius: 10px;
+            padding: 10px 18px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.25s;
+            width: 100%;
+        }
+
+        .add-btn:hover {
+            background: #dbeafe;
+            border-color: #0b5ed7;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: none;
+            cursor: pointer;
+            height: 46px;
+            padding: 0 28px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.25s;
+        }
+
+        #generate {
+            background: #0d6efd;
+            color: white;
+        }
+
+        #generate:hover {
+            background: #0b5ed7;
+        }
+
+        #generate:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-reset {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .btn-reset:hover {
+            background: #cbd5e1;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1a1a2e;
+            color: white;
+            padding: 14px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.4s, opacity 0.4s;
+            z-index: 999;
+            max-width: 400px;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            background: #065f46;
+        }
+
+        .toast.error {
+            background: #991b1b;
+        }
+
+        .toast.warning {
+            background: #92400e;
+        }
+
+        .template-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .template-option {
+            padding: 15px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.3s;
+            background: white;
+        }
+
+        .template-option:hover {
+            border-color: #0d6efd;
+            background: #f8fafc;
+        }
+
+        .template-option.active {
+            border-color: #0d6efd;
+            background: #eef4ff;
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+        }
+
+        .template-option .icon {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .template-option .name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .template-option .desc {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
+
+        .conditional-fields {
+            display: none;
+            animation: fade 0.3s;
+        }
+
+        .conditional-fields.show {
+            display: block;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #0d6efd;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .buttons {
+                flex-direction: column;
+            }
+            button {
+                width: 100%;
+            }
+            .dynamic-item .remove-btn {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin-top: 10px;
+                width: 100%;
+                border-radius: 8px;
+            }
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-links {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+            .template-selector {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <div>
+                <h1>📄 IHMA Xat Yaratish Tizimi</h1>
+                <p>6 xil shablon: Rad etish | Tasdiqlash | Tayinlash | Muddat sorash | Ariza kiritilmagan | Ariza kiritilgan</p>
+            </div>
+            <div class="header-links">
+                <a href="/admin" class="btn-admin">⚙️ Admin Panel</a>
+                <span class="status" id="backendStatus">🔗 Backend: Yuklanmoqda...</span>
+            </div>
+        </header>
+
+        <form id="letterForm">
+
+            <!-- SHABLON TANLASH -->
+            <div class="card">
+                <h2>📌 Shablon tanlash</h2>
+                <div class="template-selector" id="templateSelector">
+                    <div class="template-option active" data-template="rad">
+                        <span class="icon">❌</span>
+                        <div class="name">Rad etish</div>
+                        <div class="desc">Ariza rad etilganligi haqida</div>
+                    </div>
+                    <div class="template-option" data-template="tasdiqlandi">
+                        <span class="icon">✅</span>
+                        <div class="name">Tasdiqlash</div>
+                        <div class="desc">Nafaqa tayinlanganligi va to'lov haqida</div>
+                    </div>
+                    <div class="template-option" data-template="tayinlandi">
+                        <span class="icon">📋</span>
+                        <div class="name">Tayinlash</div>
+                        <div class="desc">Nafaqa tayinlanganligi haqida</div>
+                    </div>
+                    <div class="template-option" data-template="muddat">
+                        <span class="icon">⏳</span>
+                        <div class="name">Muddat sorash</div>
+                        <div class="desc">Murojaat muddati uzaytirilganligi haqida</div>
+                    </div>
+                    <div class="template-option" data-template="arizaKiritilmagan">
+                        <span class="icon">📪</span>
+                        <div class="name">Ariza kiritilmagan</div>
+                        <div class="desc">Nafaqa/moddiy yordamga ariza topshirilmaganligi haqida</div>
+                    </div>
+                    <div class="template-option" data-template="arizaKiritilgan">
+                        <span class="icon">📬</span>
+                        <div class="name">Ariza kiritilgan</div>
+                        <div class="desc">Ariza reyestrga ro'yxatga olinganligi haqida</div>
+                    </div>
+                </div>
+                <input type="hidden" id="templateType" value="rad">
+            </div>
+
+            <!-- ASOSIY MA'LUMOTLAR -->
+            <div class="card">
+                <h2>📋 Asosiy ma'lumotlar</h2>
+                <div class="grid">
+                    <div class="form-group">
+                        <label>MFY nomi *</label>
+                        <input type="text" id="mfyNomi" placeholder="Masalan: Katta Guzar">
+                    </div>
+                    <div class="form-group">
+                        <label>Ko'cha nomi *</label>
+                        <input type="text" id="street" placeholder="Masalan: Anisiy">
+                    </div>
+                    <div class="form-group">
+                        <label>F.I.O *</label>
+                        <input type="text" id="fio" placeholder="Familiya Ism Sharifi">
+                    </div>
+                    <div class="form-group">
+                        <label>Qayerdan murojaat *</label>
+                        <select id="murojaatfrom">
+                            <option value="">-- Tanlang --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Murojaat sanasi *</label>
+                        <input type="date" id="murojaatVaqti">
+                    </div>
+                    <div class="form-group">
+                        <label>Murojaat raqami *</label>
+                        <input type="text" id="murojaatRaqami" placeholder="325650/26">
+                        <span class="hint">Masalan: 325650/26</span>
+                    </div>
+                </div>
+                <div class="grid" id="arizaInfoGrid" style="margin-top:15px;border-top:1px solid #e2e8f0;padding-top:15px;">
+                    <div class="form-group">
+                        <label>Ariza maqsadi</label>
+                        <input type="text" id="arizaMaqsadi" placeholder="Ariza maqsadi">
+                        <span class="hint">Ariza maqsadi</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Ariza raqami (ID) *</label>
+                        <input type="text" id="arizaID" placeholder="32065423">
+                        <span class="hint">Masalan: 32065423</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Ariza sanasi *</label>
+                        <input type="date" id="arizaVaqti">
+                        <span class="hint">Yil, oy va kun birgalikda tanlanadi</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RAD ETISH SHABLONI -->
+            <div class="card conditional-fields show" id="radFields">
+                <h2>❌ Rad etish sabablari</h2>
+                <div style="margin-bottom: 20px; padding: 15px; background: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0;">
+                    <label style="font-weight: 600; display: block; margin-bottom: 10px;">📋 Ariza qayta o'rganildimi?</label>
+                    <div style="display: flex; gap: 30px; flex-wrap: wrap;">
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 15px;">
+                            <input type="radio" name="isQayta" value="true" id="isQaytaHa"> ✅ Ha (qayta o'rganilganda)
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 15px;">
+                            <input type="radio" name="isQayta" value="false" id="isQaytaYoq" checked> ❌ Yo'q (o'rganilganda)
+                        </label>
+                    </div>
+                    <p style="font-size: 12px; color: #94a3b8; margin-top: 8px;">
+                        💡 "Ha" tanlansa → xatda "qayta o'rganilganda", "Yo'q" tanlansa → "o'rganilganda" deb yoziladi.
+                    </p>
+                </div>
+
+                <div class="reason">
+                    <label>
+                        <input type="checkbox" id="uydaEmasRad">
+                        🏠 Uyda bo'lmagan
+                    </label>
+                </div>
+
+                <div class="reason">
+                    <label>
+                        <input type="checkbox" id="uyRadToggle">
+                        🏢 Ko'chmas mulk mavjud
+                    </label>
+                    <div class="reason-content" id="uyRadContent">
+                        <div id="uyRadContainer"></div>
+                        <button type="button" class="add-btn" id="addUyRad">➕ Ko'chmas mulk qo'shish</button>
+                    </div>
+                </div>
+
+                <div class="reason">
+                    <label>
+                        <input type="checkbox" id="avtoRadToggle">
+                        🚗 Avtomobil mavjud
+                    </label>
+                    <div class="reason-content" id="avtoRadContent">
+                        <div id="avtoRadContainer"></div>
+                        <button type="button" class="add-btn" id="addAvtoRad">➕ Avtomobil qo'shish</button>
+                    </div>
+                </div>
+
+                <div class="reason">
+                    <label>
+                        <input type="checkbox" id="rasmiyRadToggle">
+                        💰 Rasmiy daromad mavjud
+                    </label>
+                    <div class="reason-content" id="rasmiyRadContent">
+                        <div id="rasmiyRadContainer"></div>
+                        <button type="button" class="add-btn" id="addRasmiyRad">➕ Daromad qo'shish</button>
+                    </div>
+                </div>
+
+                <div class="reason">
+                    <label>
+                        <input type="checkbox" id="norasmiyRad">
+                        💵 Norasmiy daromad mavjud
+                    </label>
+                </div>
+            </div>
+
+            <!-- TASDIQLASH SHABLONI -->
+            <div class="card conditional-fields" id="tasdiqlandiFields">
+                <h2>✅ Tasdiqlash ma'lumotlari</h2>
+                <div class="grid">
+                    <div class="form-group">
+                        <label>Tasdiqlash sanasi *</label>
+                        <input type="text" id="tasdiqSanasi" placeholder="2026, Mart">
+                        <span class="hint">Masalan: 2026, Mart</span>
+                    </div>
+                    <div class="form-group">
+                        <label>To'lov sanasi *</label>
+                        <input type="text" id="tolovSanasi" placeholder="2026, Aprel">
+                        <span class="hint">Masalan: 2026, Aprel</span>
+                    </div>
+                </div>
+                <div class="grid" style="margin-top:15px;">
+                    <div class="form-group">
+                        <label>Hisob raqami *</label>
+                        <input type="text" id="xisobRaqam" placeholder="222222223545404">
+                        <span class="hint">Masalan: 222222223545404</span>
+                    </div>
+                    <div class="form-group">
+                        <label>To'lov summasi *</label>
+                        <input type="text" id="tolovSum" placeholder="1450543.00">
+                        <span class="hint">So'mda kiriting</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAYINLASH SHABLONI -->
+            <div class="card conditional-fields" id="tayinlandiFields">
+                <h2>📋 Tayinlash ma'lumotlari</h2>
+                <div class="grid">
+                    <div class="form-group">
+                        <label>Qo'shimcha ma'lumot</label>
+                        <input type="text" id="tayinlashQoshimcha" placeholder="Ixtiyoriy qo'shimcha ma'lumot">
+                        <span class="hint">Agar kerak bo'lsa, qo'shimcha matn kiriting</span>
+                    </div>
+                </div>
+                <p style="color:#64748b;font-size:14px;margin-top:10px;">
+                    📌 Bu shablon uchun qo'shimcha ma'lumotlar kerak emas.
+                    Faqat asosiy ma'lumotlar va Ariza raqami yetarli.
+                </p>
+            </div>
+
+            <!-- MUDDAT SO'RASH SHABLONI -->
+            <div class="card conditional-fields" id="muddatFields">
+                <h2>⏳ Muddat sorash ma'lumotlari</h2>
+                <div class="grid">
+                    <div class="form-group">
+                        <label>Qo'shimcha ma'lumot</label>
+                        <input type="text" id="qoshimchaMalumot" placeholder="Ixtiyoriy qo'shimcha ma'lumot">
+                        <span class="hint">Agar kerak bo'lsa, qo'shimcha matn kiriting</span>
+                    </div>
+                </div>
+                <p style="color:#64748b;font-size:14px;margin-top:10px;">
+                    📌 Bu shablon uchun qo'shimcha ma'lumotlar kerak emas.
+                    Faqat asosiy ma'lumotlar va Murojaat raqami yetarli.
+                </p>
+            </div>
+
+            <!-- ARIZA KIRITILMAGAN SHABLONI -->
+            <div class="card conditional-fields" id="arizaKiritilmaganFields">
+                <h2>📪 Ariza kiritilmagan</h2>
+                <p style="color:#64748b;font-size:14px;">
+                    📌 Bu shablon to'liq qo'lda to'ldiriladi, hech qanday ma'lumot avtomatik
+                    olinmaydi. Faqat yuqoridagi "Asosiy ma'lumotlar" (MFY, ko'cha, F.I.O,
+                    murojaat ma'lumotlari) yetarli — Ariza maqsadi/ID/sanasi bu holatda talab
+                    qilinmaydi, chunki xat aynan ariza umuman topshirilmaganligi haqida.
+                </p>
+            </div>
+
+            <!-- ARIZA KIRITILGAN SHABLONI -->
+            <div class="card conditional-fields" id="arizaKiritilganFields">
+                <h2>📬 Ariza kiritilgan</h2>
+                <p style="color:#64748b;font-size:14px;">
+                    📌 Bu shablon to'liq qo'lda to'ldiriladi, hech qanday ma'lumot avtomatik
+                    olinmaydi. Yuqoridagi "Asosiy ma'lumotlar" (MFY, ko'cha, F.I.O, murojaat
+                    ma'lumotlari) va Ariza maqsadi/ID/sanasi — barchasi to'ldirilishi kerak,
+                    chunki xat aynan shu arizaning reyestrga ro'yxatga olinganligi haqida.
+                </p>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Xat yaratilmoqda...</p>
+            </div>
+
+            <div class="buttons">
+                <button type="button" class="btn-reset" onclick="resetForm()">🗑 Tozalash</button>
+                <button type="button" id="generate">📄 Xat yaratish</button>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        var xatFrom = [
+            {
+                from: "Prezidentga ishonch telefoni",
+                value: "O‘zbekiston Respublikasi Prezidentiga ishonch telefoni"
+            },
+            {
+                from: "Prezidentga veb-sayt",
+                value: "O‘zbekiston Respublikasi Prezidentiga veb-sayt"
+            },
+            {
+                from: "Prezidentga Xalq qabulxonasi",
+                value: "O‘zbekiston Respublikasi Prezidentiga Xalq qabulxonasi"
+            },
+            {
+                from: "Prokuraturaga murojaat.gov.uz",
+                value: "O‘zbekiston Respublikasi Andijon tuman prokuraturasiga murojaat.gov.uz"
+            },
+            {
+                from: "Prokuraturaga yozma",
+                value: "O‘zbekiston Respublikasi Andijon tuman prokuraturasiga yozma murojaat"
+            },
+            {
+                from: "Adliya Vazirligi murojaat.gov.uz",
+                value: "O‘zbekiston Respublikasi Adliya vazirligiga murojaat.gov.uz yozma murojaat"
+            },
+            {
+                from: "Adliya Vazirligi yozma",
+                value: "O‘zbekiston Respublikasi Adliya vazirligiga yozma murojaat"
+            },
+            {
+                from: "Davlat xavfsizlik murojaat.gov.uz",
+                value: "O‘zbekiston Respublikasi Davlat xavfsizlik xizmatiga murojaat.gov.uz yozma murojaat"
+            },
+            {
+                from: "Davlat xavfsizlik yozma",
+                value: "O‘zbekiston Respublikasi Davlat xavfsizlik xizmatiga yozma murojaat"
+            },
+            {
+                from: "Tuman hokimi shaxsiy qabuli",
+                value: "Andijon viloyati, Andijon tumani hokimining shaxsiy qabul"
+            },
+            {
+                from: "Tuman hokimi sayyor qabuli",
+                value: "O‘zbekiston Respublikasi Andijon viloyati, Andijon tuman hokimining sayyor qabuli"
+            },
+            {
+                from: "Agentlik Direktori Sayyor Qabuli",
+                value: `O‘zbekiston Respublikasi Prezident huzuridagi Ijtimoiy himoya milliy Agentligi Andijon viloyat boshqarmasi Andijon tuman “Inson” Ijtimoiy xizmatlar markazi Direktorining sayyor qabuli`
+            },
+            {
+                from: "Agentlik Ishonch telefoni",
+                value: `O‘zbekiston Respublikasi Prezident huzuridagi Ijtimoiy himoya milliy Agentligi Andijon viloyat boshqarmasi Andijon tuman “Inson” Ijtimoiy xizmatlar markazi ishonch telefoni`
+            }
+        ]
+
+        
+        var murojaatfromHtml = document.getElementById("murojaatfrom")
+        xatFrom.map((item,index) => {
+            murojaatfromHtml.innerHTML += `<option value="${item.value}">${item.from}</option>`
+        })
+
+        // ============================================================
+        // COUNTERLAR
+        // ============================================================
+        let uyRadCount = 0,
+            avtoRadCount = 0,
+            rasmiyRadCount = 0;
+
+        // ============================================================
+        // TOAST
+        // ============================================================
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            if (!toast) return;
+            toast.textContent = message;
+            toast.className = 'toast show ' + (type || '');
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
+        // ============================================================
+        // BACKEND STATUS
+        // ============================================================
+        async function checkBackend() {
+            const statusEl = document.getElementById('backendStatus');
+            if (!statusEl) return;
+            try {
+                const res = await fetch(`/api/health`);
+                if (res.ok) {
+                    statusEl.innerHTML = '✅ Backend: Ulangan';
+                    statusEl.style.color = '#16a34a';
+                } else {
+                    statusEl.innerHTML = '❌ Backend: Xatolik';
+                    statusEl.style.color = '#dc2626';
+                }
+            } catch (e) {
+                statusEl.innerHTML = '❌ Backend: O\'chirilgan';
+                statusEl.style.color = '#dc2626';
+                showToast('⚠️ Backend server ishlamayapti!', 'error');
+            }
+        }
+
+        // ============================================================
+        // SHABLON TANLASH
+        // ============================================================
+        document.querySelectorAll('.template-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.template-option').forEach(o => o.classList.remove('active'));
+                this.classList.add('active');
+
+                const template = this.dataset.template;
+                document.getElementById('templateType').value = template;
+
+                document.querySelectorAll('.conditional-fields').forEach(el => {
+                    el.classList.remove('show');
+                });
+
+                const fieldMap = {
+                    'rad': 'radFields',
+                    'tasdiqlandi': 'tasdiqlandiFields',
+                    'tayinlandi': 'tayinlandiFields',
+                    'muddat': 'muddatFields',
+                    'arizaKiritilmagan': 'arizaKiritilmaganFields',
+                    'arizaKiritilgan': 'arizaKiritilganFields'
+                };
+
+                // "Ariza kiritilmagan" va "Muddat sorash" xatlarida ariza haqida gap
+                // bo'lmaydi (docx_generator.py'dagi build_ariza_kiritilmagan/build_muddat
+                // arizaMaqsadi/arizaID/arizaVaqti'ni umuman ishlatmaydi) — shu sabab bu
+                // maydonlar bu ikki shablonda keraksiz va yashiriladi (validate() ham shu
+                // holatda ularni talab qilmaydi).
+                const TEMPLATES_WITHOUT_ARIZA_INFO = ['arizaKiritilmagan', 'muddat'];
+                const arizaInfoGrid = document.getElementById('arizaInfoGrid');
+                if (arizaInfoGrid) {
+                    arizaInfoGrid.style.display = TEMPLATES_WITHOUT_ARIZA_INFO.includes(template) ? 'none' : '';
+                }
+
+                const fieldId = fieldMap[template];
+                if (fieldId) {
+                    document.getElementById(fieldId).classList.add('show');
+                }
+            });
+        });
+
+        // ============================================================
+        // CHECKBOX TOGGLE
+        // ============================================================
+        document.getElementById('uyRadToggle')?.addEventListener('change', function() {
+            const content = document.getElementById('uyRadContent');
+            if (content) content.classList.toggle('show', this.checked);
+            if (this.checked && uyRadCount === 0) addUyRad();
+        });
+
+        document.getElementById('avtoRadToggle')?.addEventListener('change', function() {
+            const content = document.getElementById('avtoRadContent');
+            if (content) content.classList.toggle('show', this.checked);
+            if (this.checked && avtoRadCount === 0) addAvtoRad();
+        });
+
+        document.getElementById('rasmiyRadToggle')?.addEventListener('change', function() {
+            const content = document.getElementById('rasmiyRadContent');
+            if (content) content.classList.toggle('show', this.checked);
+            if (this.checked && rasmiyRadCount === 0) addRasmiyRad();
+        });
+
+        // ============================================================
+        // KO'CHMAS MULK (uyRad)
+        // ============================================================
+        function addUyRad() {
+            uyRadCount++;
+            const container = document.getElementById('uyRadContainer');
+            if (!container) return;
+            const div = document.createElement('div');
+            div.className = 'dynamic-item';
+            div.innerHTML = `
+                <button type="button" class="remove-btn" onclick="removeItem(this, 'uyRad')">✕</button>
+                <div class="item-number">🏢 Ko'chmas mulk #${uyRadCount}</div>
+                <div class="grid">
+                    <div class="form-group"><label>Uy manzili</label><input type="text" class="uyRad-manzil" placeholder="Anisiy ko'chasi, 20-xonadon"></div>
+                    <div class="form-group"><label>Kadastr raqami</label><input type="text" class="uyRad-kadastr" placeholder="17:20:325:42-1004:20"></div>
+                </div>
+            `;
+            container.appendChild(div);
+        }
+
+        // ============================================================
+        // AVTOMOBIL (avtoRad)
+        // ============================================================
+        function addAvtoRad() {
+            avtoRadCount++;
+            const container = document.getElementById('avtoRadContainer');
+            if (!container) return;
+            const div = document.createElement('div');
+            div.className = 'dynamic-item';
+            div.innerHTML = `
+                <button type="button" class="remove-btn" onclick="removeItem(this, 'avtoRad')">✕</button>
+                <div class="item-number">🚗 Avtomobil #${avtoRadCount}</div>
+                <div class="grid">
+                    <div class="form-group"><label>Yili</label><input type="text" class="avtoRad-yil" placeholder="2017"></div>
+                    <div class="form-group"><label>Rusumi</label><input type="text" class="avtoRad-model" placeholder="Damas"></div>
+                    <div class="form-group"><label>Davlat raqami</label><input type="text" class="avtoRad-raqam" placeholder="60S342DB"></div>
+                </div>
+            `;
+            container.appendChild(div);
+        }
+
+        // ============================================================
+        // RASMIY DAROMAD (rasmiyRad)
+        // ============================================================
+        function addRasmiyRad() {
+            rasmiyRadCount++;
+            const container = document.getElementById('rasmiyRadContainer');
+            if (!container) return;
+            const div = document.createElement('div');
+            div.className = 'dynamic-item';
+            div.innerHTML = `
+                <button type="button" class="remove-btn" onclick="removeItem(this, 'rasmiyRad')">✕</button>
+                <div class="item-number">💰 Daromad #${rasmiyRadCount}</div>
+                <div class="grid">
+                    <div class="form-group"><label>Egasi</label><input type="text" class="rasmiyRad-egasi" placeholder="Mullajonovv Rozivay"></div>
+                    <div class="form-group"><label>Miqdori (so'm)</label><input type="text" class="rasmiyRad-miqdori" placeholder="2450999"></div>
+                    <div class="form-group"><label>Tashkilot</label><input type="text" class="rasmiyRad-tashkilot" placeholder="MAKTABGACHA TALIM MUASASI3"></div>
+                    <div class="form-group"><label>Davri</label><input type="text" class="rasmiyRad-davri" placeholder="2026, Mart"></div>
+                </div>
+            `;
+            container.appendChild(div);
+        }
+
+        // ============================================================
+        // O'CHIRISH
+        // ============================================================
+        function removeItem(btn, type) {
+            const item = btn.closest('.dynamic-item');
+            if (!item) return;
+            if (confirm('Ushbu ma\'lumotni o\'chirmoqchimisiz?')) {
+                item.remove();
+                if (type === 'uyRad') uyRadCount--;
+                else if (type === 'avtoRad') avtoRadCount--;
+                else if (type === 'rasmiyRad') rasmiyRadCount--;
+                renumberItems(type);
+            }
+        }
+
+        function renumberItems(type) {
+            const container = document.getElementById(
+                type === 'uyRad' ? 'uyRadContainer' :
+                type === 'avtoRad' ? 'avtoRadContainer' : 'rasmiyRadContainer'
+            );
+            if (!container) return;
+            const items = container.querySelectorAll('.dynamic-item');
+            const labels = { uyRad: '🏢 Ko\'chmas mulk', avtoRad: '🚗 Avtomobil', rasmiyRad: '💰 Daromad' };
+            items.forEach((item, i) => {
+                const num = item.querySelector('.item-number');
+                if (num) num.textContent = `${labels[type]} #${i + 1}`;
+            });
+        }
+
+        // ============================================================
+        // QO'SHISH TUGMALARI
+        // ============================================================
+        document.getElementById('addUyRad')?.addEventListener('click', addUyRad);
+        document.getElementById('addAvtoRad')?.addEventListener('click', addAvtoRad);
+        document.getElementById('addRasmiyRad')?.addEventListener('click', addRasmiyRad);
+
+        // ============================================================
+        // MA'LUMOT YIG'ISH - YANGI FORMAT
+        // ============================================================
+
+        function krilToLotin(text) {
+            const map = {
+                'А': 'A', 'а': 'a',
+                'Б': 'B', 'б': 'b',
+                'В': 'V', 'в': 'v',
+                'Г': 'G', 'г': 'g',
+                'Д': 'D', 'д': 'd',
+                'Е': 'E', 'е': 'e',
+                'Ё': 'Yo', 'ё': 'yo',
+                'Ж': 'J', 'ж': 'j',
+                'З': 'Z', 'з': 'z',
+                'И': 'I', 'и': 'i',
+                'Й': 'Y', 'й': 'y',
+                'К': 'K', 'к': 'k',
+                'Л': 'L', 'л': 'l',
+                'М': 'M', 'м': 'm',
+                'Н': 'N', 'н': 'n',
+                'О': 'O', 'о': 'o',
+                'П': 'P', 'п': 'p',
+                'Р': 'R', 'р': 'r',
+                'С': 'S', 'с': 's',
+                'Т': 'T', 'т': 't',
+                'У': 'U', 'у': 'u',
+                'Ф': 'F', 'ф': 'f',
+                'Х': 'X', 'х': 'x',
+                'Ц': 'Ts', 'ц': 'ts',
+                'Ч': 'Ch', 'ч': 'ch',
+                'Ш': 'Sh', 'ш': 'sh',
+                'Ъ': '', 'ъ': '',
+                'Ы': 'I', 'ы': 'i',
+                'Ь': '', 'ь': '',
+                'Э': 'E', 'э': 'e',
+                'Ю': 'Yu', 'ю': 'yu',
+                'Я': 'Ya', 'я': 'ya',
+
+                // O'zbek kirill alifbosi
+                'Ў': "O'", 'ў': "o'",
+                'Қ': 'Q', 'қ': 'q',
+                'Ғ': "G'", 'ғ': "g'",
+                'Ҳ': 'H', 'ҳ': 'h'
+            };
+
+            return text.replace(/./g, char => map[char] ?? char);
+            }
+            
+        function getVal(id) {
+            const el = document.getElementById(id);
+            if (!el) return '';
+            return krilToLotin(el.value) || '';
+        }
+
+        function getCheck(id) {
+            const el = document.getElementById(id);
+            if (!el) return false;
+            return el.checked || false;
+        }
+        function toTitleCase(str) {
+            return str
+                .toLowerCase()
+                .replace(/\b\w/g, char => char.toUpperCase());
+            }
+        function toSentenceCase(str) {
+            if (!str) return '';
+            const lower = str.toLowerCase();
+            const match = lower.match(/[a-zʻʼ]/);
+            if (!match) return lower;
+            const i = match.index;
+            return lower.slice(0, i) + lower.charAt(i).toUpperCase() + lower.slice(i + 1);
+            }
+
+
+        function collectData() {
+            const template = getVal('templateType') || 'rad';
+            const isQayta = document.querySelector('input[name="isQayta"]:checked');
+            const isQaytaValue = isQayta ? isQayta.value === 'true' : false;
+
+            // Asosiy ma'lumotlar
+            const data = {
+                fio: toTitleCase(getVal('fio')),
+                street: toTitleCase(getVal('street')),
+                mfyNomi: toTitleCase(getVal('mfyNomi')),
+                murojaatfrom: getVal('murojaatfrom'),
+                murojaatRaqami: getVal('murojaatRaqami'),
+                murojaatVaqti: getVal('murojaatVaqti'),
+                arizaMaqsadi: getVal('arizaMaqsadi').toLowerCase(),
+                arizaVaqti: getVal('arizaVaqti'),
+                arizaID: getVal('arizaID'),
+                template: template,
+                isQayta: isQaytaValue,
+                tasdiqMalumotlari: {
+                    is: false,
+                    tasdiqSanasi: '',
+                    tolovSanasi: '',
+                    tolovSum: '',
+                    xsobraqam: ''
+                }
+            };
+
+            // ===== RAD ETISH SHABLONI =====
+            if (template === 'rad') {
+                data.radSabablari = {
+                    uydaEmasRad: getCheck('uydaEmasRad'),
+                    norasmiyRad: getCheck('norasmiyRad'),
+                    uyRad: [],
+                    avtoRad: [],
+                    rasmiyRad: []
+                };
+
+                document.querySelectorAll('#uyRadContainer .dynamic-item').forEach(item => {
+                    data.radSabablari.uyRad.push({
+                        uyManzil: krilToLotin(item.querySelector('.uyRad-manzil')?.value?.trim()) || '',
+                        uyKadastr: item.querySelector('.uyRad-kadastr')?.value?.trim() || ''
+                    });
+                });
+
+                document.querySelectorAll('#avtoRadContainer .dynamic-item').forEach(item => {
+                    data.radSabablari.avtoRad.push({
+                        avtoYil: item.querySelector('.avtoRad-yil')?.value?.trim() || '',
+                        avtoModel: krilToLotin(item.querySelector('.avtoRad-model')?.value?.trim()) || '',
+                        avtoRaqam: item.querySelector('.avtoRad-raqam')?.value?.trim() || ''
+                    });
+                });
+
+                document.querySelectorAll('#rasmiyRadContainer .dynamic-item').forEach(item => {
+                    data.radSabablari.rasmiyRad.push({
+                        egasi: krilToLotin(toSentenceCase(item.querySelector('.rasmiyRad-egasi')?.value?.trim())) || '',
+                        miqdori: item.querySelector('.rasmiyRad-miqdori')?.value?.trim() || '',
+                        tashkilot: krilToLotin(toSentenceCase(item.querySelector('.rasmiyRad-tashkilot')?.value?.trim()) || ''),
+                        davri: krilToLotin(item.querySelector('.rasmiyRad-davri')?.value?.trim()) || ''
+                    });
+                });
+            }
+
+            // ===== TASDIQLASH SHABLONI =====
+            if (template === 'tasdiqlandi') {
+                data.tasdiqMalumotlari = {
+                    is: true,
+                    tasdiqSanasi: getVal('tasdiqSanasi'),
+                    tolovSanasi: getVal('tolovSanasi'),
+                    tolovSum: getVal('tolovSum'),
+                    xsobraqam: getVal('xisobRaqam')
+                };
+            }
+
+            // ===== TAYINLASH SHABLONI =====
+            if (template === 'tayinlandi') {
+                data.tayinlashQoshimcha = getVal('tayinlashQoshimcha');
+            }
+
+            // ===== MUDDAT SO'RASH SHABLONI =====
+            if (template === 'muddat') {
+                data.qoshimchaMalumot = getVal('qoshimchaMalumot');
+            }
+
+            return data;
+        }
+
+        // ============================================================
+        // VALIDATSIYA
+        // ============================================================
+        function validate(data) {
+            const errors = [];
+
+            if (!data.fio) errors.push('F.I.O kiriting!');
+            if (!data.mfyNomi) errors.push('MFY nomini kiriting!');
+            if (!data.street) errors.push('Ko\'cha nomini kiriting!');
+            if (!data.murojaatfrom) errors.push('Murojaat manbasini tanlang!');
+            if (!data.murojaatVaqti) errors.push('Murojaat sanasini tanlang!');
+            if (!data.murojaatRaqami) errors.push('Murojaat raqamini kiriting!');
+
+            // "Ariza kiritilmagan" va "Muddat sorash" xatlari ariza maqsadi/ID/sanasini
+            // umuman ishlatmaydi (docx generatorga qarang) — shu ikki shablonda talab qilinmaydi.
+            if (data.template !== 'arizaKiritilmagan' && data.template !== 'muddat') {
+                if (!data.arizaVaqti) errors.push('Ariza sanasini tanlang!');
+                if (!data.arizaID) errors.push('Ariza raqamini (ID) kiriting!');
+                if (!data.arizaMaqsadi) errors.push('Ariza maqsadini tanlang!');
+            }
+
+            if (data.template === 'rad') {
+                const rad = data.radSabablari || {};
+                const hasReason = rad.uydaEmasRad || rad.norasmiyRad ||
+                    (rad.uyRad && rad.uyRad.length > 0) ||
+                    (rad.avtoRad && rad.avtoRad.length > 0) ||
+                    (rad.rasmiyRad && rad.rasmiyRad.length > 0);
+
+                if (!hasReason) errors.push('Kamida bitta rad etish sababini tanlang!');
+
+                if (getCheck('uyRadToggle') && (!rad.uyRad || rad.uyRad.length === 0)) {
+                    errors.push('"Ko\'chmas mulk" tanlangan, lekin hech qanday mulk qo\'shilmagan!');
+                }
+                if (getCheck('avtoRadToggle') && (!rad.avtoRad || rad.avtoRad.length === 0)) {
+                    errors.push('"Avtomobil" tanlangan, lekin hech qanday avtomobil qo\'shilmagan!');
+                }
+                if (getCheck('rasmiyRadToggle') && (!rad.rasmiyRad || rad.rasmiyRad.length === 0)) {
+                    errors.push('"Rasmiy daromad" tanlangan, lekin hech qanday daromad qo\'shilmagan!');
+                }
+            }
+
+            if (data.template === 'tasdiqlandi') {
+                if (!data.tasdiqMalumotlari?.tasdiqSanasi) errors.push('Tasdiqlash sanasini kiriting!');
+                if (!data.tasdiqMalumotlari?.tolovSanasi) errors.push('To\'lov sanasini kiriting!');
+                if (!data.tasdiqMalumotlari?.xsobraqam) errors.push('Hisob raqamini kiriting!');
+                if (!data.tasdiqMalumotlari?.tolovSum) errors.push('To\'lov summasini kiriting!');
+            }
+
+            if (errors.length > 0) {
+                showToast('⚠️ ' + errors.join('\n'), 'error');
+                return false;
+            }
+            return true;
+        }
+
+        // ============================================================
+        // XAT YARATISH
+        // ============================================================
+        document.getElementById('generate')?.addEventListener('click', async function() {
+            const data = collectData();
+            console.log('Yuborilayotgan ma\'lumotlar:', JSON.stringify(data, null, 2));
+
+            if (!validate(data)) return;
+
+            const btn = this;
+            const loading = document.getElementById('loading');
+
+            btn.disabled = true;
+            btn.textContent = '⏳...';
+            if (loading) loading.classList.add('show');
+
+            try {
+                const res = await fetch(`/api/generate`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await res.json();
+
+                if (result.success) {
+                    showToast('✅ Ma\'lumotlar muvaffaqiyatli saqlandi!', 'success');
+                    console.log('Javob:', result);
+                } else {
+                    const errors = result.errors ? result.errors.join('\n') : result.error;
+                    showToast('❌ ' + errors, 'error');
+                }
+            } catch (e) {
+                console.error('Xat yaratishda xatolik:', e);
+                showToast('❌ Server bilan bog\'lanib bo\'lmadi: ' + e.message, 'error');
+            }
+
+            btn.disabled = false;
+            btn.textContent = '📄 Xat yaratish';
+            if (loading) loading.classList.remove('show');
+        });
+
+        // ============================================================
+        // FORMANI TOZALASH
+        // ============================================================
+        function resetForm() {
+            if (!confirm('Hamma ma\'lumotlarni tozalashni xohlaysizmi?')) return;
+
+            document.querySelectorAll('input, select').forEach(el => {
+                if (el.type === 'checkbox') {
+                    el.checked = false;
+                } else if (el.type !== 'reset' && el.type !== 'button' && el.type !== 'radio') {
+                    el.value = '';
+                }
+            });
+
+            const isQaytaYoq = document.getElementById('isQaytaYoq');
+            if (isQaytaYoq) isQaytaYoq.checked = true;
+
+            document.getElementById('uyRadContainer').innerHTML = '';
+            document.getElementById('avtoRadContainer').innerHTML = '';
+            document.getElementById('rasmiyRadContainer').innerHTML = '';
+
+            uyRadCount = 0;
+            avtoRadCount = 0;
+            rasmiyRadCount = 0;
+
+            document.querySelectorAll('.reason-content').forEach(el => {
+                el.classList.remove('show');
+            });
+
+            document.querySelectorAll('.template-option').forEach(o => o.classList.remove('active'));
+            const defaultOpt = document.querySelector('[data-template="rad"]');
+            if (defaultOpt) defaultOpt.classList.add('active');
+            document.getElementById('templateType').value = 'rad';
+
+            const arizaInfoGrid = document.getElementById('arizaInfoGrid');
+            if (arizaInfoGrid) arizaInfoGrid.style.display = '';
+
+            document.querySelectorAll('.conditional-fields').forEach(el => el.classList.remove('show'));
+            const radFields = document.getElementById('radFields');
+            if (radFields) radFields.classList.add('show');
+
+            showToast('🗑 Barcha ma\'lumotlar tozalandi!', 'warning');
+        }
+
+        // ============================================================
+        // CTRL+ENTER
+        // ============================================================
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                e.preventDefault();
+                const genBtn = document.getElementById('generate');
+                if (genBtn) genBtn.click();
+            }
+        });
+
+        // ============================================================
+        // BOSHLANG'ICH
+        // ============================================================
+        checkBackend();
+        setInterval(checkBackend, 30000);
+
+        console.log('✅ IHMA Xat Yaratish Tizimi yuklandi!');
+        console.log('💡 4 xil shablon: Rad | Tasdiqlash | Tayinlash | Muddat sorash');
+        console.log('💡 Ctrl+Enter - Xat yaratish');
+    </script>
+
+</body>
+
+</html>

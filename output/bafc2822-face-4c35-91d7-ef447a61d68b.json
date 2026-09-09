@@ -1,0 +1,30 @@
+{
+  "id": "bafc2822-face-4c35-91d7-ef447a61d68b",
+  "fio": "Fozilova Moxinur",
+  "street": "Bunyotkor",
+  "mfyNomi": "Kuyganyor",
+  "murojaatfrom": "O‘zbekiston Respublikasi Prezidentiga ishonch telefoni",
+  "murojaatRaqami": "451891/26",
+  "murojaatVaqti": "2026-08-14",
+  "arizaMaqsadi": "kam ta'minlangan oilalar bolalar nafaqasi tayinlash",
+  "arizaVaqti": "2026-08-21",
+  "arizaID": "0",
+  "template": "rad",
+  "isQayta": false,
+  "tasdiqMalumotlari": {
+    "is": false,
+    "tasdiqSanasi": "",
+    "tolovSanasi": "",
+    "tolovSum": "",
+    "xsobraqam": ""
+  },
+  "radSabablari": {
+    "uydaEmasRad": false,
+    "norasmiyRad": true,
+    "uyRad": [],
+    "avtoRad": [],
+    "rasmiyRad": []
+  },
+  "createdAt": "2026-08-21 18:40:27",
+  "createdAtDate": "2026-08-21"
+}

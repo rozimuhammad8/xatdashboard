@@ -1,0 +1,23 @@
+{
+  "id": "f78ec2a7-85e7-4bea-860b-ae8620f9b803",
+  "fio": "Xolmirzayev Ibrohimjon",
+  "street": "Bozor",
+  "mfyNomi": "Bobur",
+  "murojaatfrom": "Andijon viloyati, Andijon tumani hokimining shaxsiy qabul",
+  "murojaatRaqami": "59529-rq/26",
+  "murojaatVaqti": "2026-08-17",
+  "arizaMaqsadi": "",
+  "arizaVaqti": "",
+  "arizaID": "",
+  "template": "arizaKiritilmagan",
+  "isQayta": false,
+  "tasdiqMalumotlari": {
+    "is": false,
+    "tasdiqSanasi": "",
+    "tolovSanasi": "",
+    "tolovSum": "",
+    "xsobraqam": ""
+  },
+  "createdAt": "2026-09-08 13:46:56",
+  "createdAtDate": "2026-09-08"
+}

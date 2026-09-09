@@ -1,0 +1,64 @@
+{
+  "id": "ac98442d-0510-4a87-9cc4-2ea2ed17ca5d",
+  "fio": "Sharobidinov Qudratillo",
+  "street": "Nayman Obod",
+  "mfyNomi": "Katta Nayman",
+  "murojaatfrom": "O‘zbekiston Respublikasi Prezidentiga ishonch telefoni",
+  "murojaatRaqami": "1778/99",
+  "murojaatVaqti": "2026-08-09",
+  "arizaMaqsadi": "kam ta'minlangan oilalarga bolalar nafaqasi",
+  "arizaVaqti": "2025-09-08",
+  "arizaID": "2",
+  "template": "rad",
+  "isQayta": true,
+  "tasdiqMalumotlari": {
+    "is": false,
+    "tasdiqSanasi": "",
+    "tolovSanasi": "",
+    "tolovSum": "",
+    "xsobraqam": ""
+  },
+  "radSabablari": {
+    "uydaEmasRad": true,
+    "norasmiyRad": true,
+    "uyRad": [
+      {
+        "uyManzil": "Islomobod MFY, Toshkent ko'chasi, 40a-uy, 24-xonadon",
+        "uyKadastr": "17:15:02:03:09:0014:0001:024"
+      },
+      {
+        "uyManzil": "Islomobod MFY, Toshkent ko'chasi, 40a-uy, 38-xonadon",
+        "uyKadastr": "17:15:02:03:09:0014:0001:038"
+      }
+    ],
+    "avtoRad": [
+      {
+        "avtoYil": "2021",
+        "avtoModel": "DAMAS",
+        "avtoRaqam": "60D266KB"
+      }
+    ],
+    "rasmiyRad": [
+      {
+        "egasi": "YULDASHEVA LATOFATXON MURATOVNA",
+        "miqdori": "1338363.0",
+        "tashkilot": "\"Andijon tuman maktabgacha va maktab ta'limi bo'limi\" dm",
+        "davri": "Mart, 2026"
+      },
+      {
+        "egasi": "YULDASHEVA LATOFATXON MURATOVNA",
+        "miqdori": "1338363.0",
+        "tashkilot": "\"Andijon tuman maktabgacha va maktab ta'limi bo'limi\" dm",
+        "davri": "Aprel, 2026"
+      },
+      {
+        "egasi": "YULDASHEVA LATOFATXON MURATOVNA",
+        "miqdori": "28977317.0",
+        "tashkilot": "\"Andijon tuman maktabgacha va maktab ta'limi bo'limi\" dm",
+        "davri": "May, 2026"
+      }
+    ]
+  },
+  "createdAt": "2026-08-09 22:21:43",
+  "createdAtDate": "2026-08-09"
+}
